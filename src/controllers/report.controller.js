@@ -174,15 +174,11 @@ const generatePDF = async (req, res) => {
             TaskEntry.find({ date: { $gte: startDate, $lte: endDate } })
         ]);
 
-        const fixedColsWidth = 30 + 100 + 90; 
-        const minActivityColsTotal = dateRange.length * 120;
-        const requiredPageWidth = Math.max(841.89, fixedColsWidth + minActivityColsTotal + 60);
-
         // Create PDF document (Landscape)
         const doc = new PDFDocument({ 
             layout: 'landscape', 
             margin: 30,
-            size: [requiredPageWidth, 595.28]
+            size: 'A4'
         });
 
         // Set response headers
@@ -216,18 +212,18 @@ const generatePDF = async (req, res) => {
             
             currentY = 105;
 
-            const infoColsWidth = 30; // S.No
-            const nameColWidth = 100;
-            const desigColWidth = 90;
+            const infoColsWidth = 25; // S.No
+            const nameColWidth = 90;
+            const desigColWidth = 80;
             const availableDaySpace = pageWidth - 60 - infoColsWidth - nameColWidth - desigColWidth;
-            const dayColWidth = Math.max(120, availableDaySpace / dateRange.length);
-            const tableActualWidth = infoColsWidth + nameColWidth + desigColWidth + (dateRange.length * dayColWidth);
+            const dayColWidth = availableDaySpace / dateRange.length;
+            const tableActualWidth = pageWidth - 60;
 
             // Header row background (Dark green)
             doc.rect(30, currentY, tableActualWidth, 30)
                .fillAndStroke('#1B5E20', '#1B5E20');
             
-            doc.fillColor('#ffffff').fontSize(9).font('Helvetica-Bold');
+            doc.fillColor('#ffffff').fontSize(8).font('Helvetica-Bold');
 
             // Header Column Texts
             doc.text('S.No', 30, currentY + 11, { width: infoColsWidth, align: 'center' });
@@ -241,18 +237,29 @@ const generatePDF = async (req, res) => {
 
             // Header Bottom Thick Border
             doc.strokeColor('#1B5E20').lineWidth(1)
-               .moveTo(30, currentY + 30).lineTo(requiredPageWidth - 30, currentY + 30).stroke();
+               .moveTo(30, currentY + 30).lineTo(pageWidth - 30, currentY + 30).stroke();
 
             return currentY + 30;
         };
 
+        let pageNumber = 1;
         // Footer function for each page
         const drawFooter = (doc) => {
-            const footerY = doc.page.height - 60; // Safely above bottom margin
-            doc.strokeColor('#000000').lineWidth(0.5).moveTo(30, footerY - 5).lineTo(requiredPageWidth - 30, footerY - 5).stroke();
+            const footerY = doc.page.height - 30;
+            doc.fillColor('#000000').fontSize(9).font('Helvetica');
+            doc.text(`Page ${pageNumber}`, 30, footerY, { align: 'center', width: pageWidth - 60 });
+            pageNumber++;
+        };
+
+        const drawSignatures = (doc) => {
+            const sigY = doc.page.height - 60;
+            doc.strokeColor('#000000').lineWidth(0.5);
+            doc.moveTo(30, sigY - 5).lineTo(200, sigY - 5).stroke();
             doc.fillColor('#000000').fontSize(10).font('Helvetica-Bold');
-            doc.text('Dean, Research and Development', 30, footerY, { align: 'left', lineBreak: false });
-            doc.text('Principal', requiredPageWidth - 130, footerY, { align: 'right', width: 100, lineBreak: false });
+            doc.text('Dean, Research and Development', 30, sigY, { align: 'left', lineBreak: false });
+            
+            doc.moveTo(pageWidth - 200, sigY - 5).lineTo(pageWidth - 30, sigY - 5).stroke();
+            doc.text('Principal', pageWidth - 200, sigY, { align: 'right', width: 170, lineBreak: false });
         };
 
         // Initial Header
@@ -265,12 +272,12 @@ const generatePDF = async (req, res) => {
         if (!isMonthly) {
             // --- WEEKLY GRID FORMAT (Existing) ---
 
-            const infoColsWidth = 30;
-            const nameColWidth = 100;
-            const desigColWidth = 90;
+            const infoColsWidth = 25;
+            const nameColWidth = 90;
+            const desigColWidth = 80;
             const availableDaySpace = pageWidth - 60 - infoColsWidth - nameColWidth - desigColWidth;
-            const dayColWidth = Math.max(120, availableDaySpace / dateRange.length);
-            const tableActualWidth = infoColsWidth + nameColWidth + desigColWidth + (dateRange.length * dayColWidth);
+            const dayColWidth = availableDaySpace / dateRange.length;
+            const tableActualWidth = pageWidth - 60;
 
             staffList.forEach((staff, sIdx) => {
                 const rowContents = [];
@@ -304,7 +311,7 @@ const generatePDF = async (req, res) => {
                     }
 
                     let items = [];
-                    let workloads = [];
+                    let items = [];
 
                     if (dayLog && dayLog.workDone && dayLog.workDone.trim() !== '') {
                         let cleaned = cleanCellText(dayLog.workDone);
@@ -322,20 +329,10 @@ const generatePDF = async (req, res) => {
                             if (task.bookTitle) items.push(`Book: ${cleanCellText(String(task.bookTitle))}`);
                             if (task.activityTitle) items.push(`Activity: ${cleanCellText(String(task.activityTitle))}`);
                         }
-
-                        // Collect additional workloads
-                        for (let i = 1; i <= 5; i++) {
-                            const wField = task[`additionalWorkload${i}`];
-                            if (wField && wField.trim() !== '') {
-                                workloads.push(cleanCellText(wField));
-                            }
-                        }
                     });
 
                     items = items.filter((v, i, a) => v && a.indexOf(v) === i);
-                    workloads = workloads.filter((v, i, a) => v && a.indexOf(v) === i);
-
-                    rowContents.push(items.length > 0 || workloads.length > 0 ? { type: 'text', items, workloads } : { type: 'empty' });
+                    rowContents.push(items.length > 0 ? { type: 'text', items } : { type: 'empty' });
                 });
 
                 let maxRowHeight = 40; 
@@ -344,15 +341,7 @@ const generatePDF = async (req, res) => {
                         let textHeight = 10;
                         if (content.items.length > 0) {
                             content.items.forEach((it, idx) => {
-                                textHeight += doc.heightOfString(`${idx + 1}. ${it}`, { width: dayColWidth - 10, size: 8 }) + 3;
-                            });
-                        }
-                        
-                        if (content.workloads.length > 0) {
-                            textHeight += 10; // Divider space
-                            textHeight += doc.heightOfString('Additional Workload:', { width: dayColWidth - 10, size: 8, font: 'Helvetica-Bold' }) + 3;
-                            content.workloads.forEach(w => {
-                                textHeight += doc.heightOfString(`- ${w}`, { width: dayColWidth - 10, size: 8 }) + 2;
+                                textHeight += doc.heightOfString(`${idx + 1}. ${it}`, { width: dayColWidth - 4, size: 7.5 }) + 3;
                             });
                         }
                         if (textHeight + 10 > maxRowHeight) maxRowHeight = textHeight + 10;
@@ -361,7 +350,7 @@ const generatePDF = async (req, res) => {
 
                 // Auto-expand row height, do NOT limit to 150. Ensure we trigger page break if it's too big.
 
-                // Page break check (ensures footer has space)
+                // Page break check
                 if (currentY + maxRowHeight > doc.page.height - 80) {
                     drawFooter(doc);
                     doc.addPage();
@@ -369,7 +358,7 @@ const generatePDF = async (req, res) => {
                     currentY = drawHeader(doc, currentY);
                 }
 
-                const rowColor = (sIdx % 2 === 0) ? '#E3F2FD' : '#E8F5E9'; // Light blue and Light green
+                const rowColor = (sIdx % 2 === 0) ? '#FFFFFF' : '#EBF5FB'; 
                 doc.fillColor(rowColor).rect(30, currentY, tableActualWidth, maxRowHeight).fill();
                 doc.strokeColor('#1B5E20').lineWidth(0.3).rect(30, currentY, tableActualWidth, maxRowHeight).stroke();
                 
@@ -380,11 +369,11 @@ const generatePDF = async (req, res) => {
 
                 doc.fillColor('#000000');
                 const nameY = currentY + (maxRowHeight / 2) - 4.5;
-                doc.font('Helvetica').fontSize(9).text(`${sIdx + 1}`, 30, nameY, { width: infoColsWidth, align: 'center' });
+                doc.font('Helvetica').fontSize(8).text(`${sIdx + 1}`, 30, nameY, { width: infoColsWidth, align: 'center' });
                 let staffName = staff.name || 'Staff';
                 if (!staffName.toLowerCase().startsWith('dr.')) staffName = `Dr. ${staffName}`;
-                doc.font('Helvetica-Bold').text(staffName, 30 + infoColsWidth + 5, nameY, { width: nameColWidth - 10 });
-                doc.font('Helvetica').fontSize(8).text(`${staff.designation || 'Staff'}\n(${staff.department || 'CFRD'})`, 30 + infoColsWidth + nameColWidth, nameY - 4, { width: desigColWidth, align: 'center' });
+                doc.font('Helvetica-Bold').fontSize(8).text(staffName, 30 + infoColsWidth + 3, nameY, { width: nameColWidth - 6 });
+                doc.font('Helvetica').fontSize(7.5).text(`${staff.designation || 'Staff'}\n(${staff.department || 'CFRD'})`, 30 + infoColsWidth + nameColWidth, nameY - 4, { width: desigColWidth, align: 'center' });
 
                 dateRange.forEach((_, i) => {
                     const colX = 30 + infoColsWidth + nameColWidth + desigColWidth + (i * dayColWidth);
@@ -394,36 +383,17 @@ const generatePDF = async (req, res) => {
                         
                         // Render Research Items
                         content.items.forEach((item, idx) => {
-                            const itemHeight = doc.heightOfString(`${idx + 1}. ${item}`, { width: dayColWidth - 10, size: 8 });
+                            const itemHeight = doc.heightOfString(`${idx + 1}. ${item}`, { width: dayColWidth - 4, size: 7.5 });
                             
-                            doc.font('Helvetica').fontSize(8).text(`${idx + 1}. ${item}`, colX + 5, itemY, { width: dayColWidth - 10 });
+                            doc.font('Helvetica').fontSize(7.5).text(`${idx + 1}. ${item}`, colX + 2, itemY, { width: dayColWidth - 4 });
                             itemY += itemHeight + 3;
-                            
                         });
-
-                        // Render Additional Workload
-                        if (content.workloads.length > 0) {
-                            // Divider Line
-                            doc.strokeColor('#1B5E20').lineWidth(0.2).moveTo(colX + 5, itemY + 2).lineTo(colX + dayColWidth - 10, itemY + 2).stroke();
-                            itemY += 5;
-                            
-                            // Header
-                            doc.font('Helvetica-Bold').fontSize(8).text('Additional Workload:', colX + 5, itemY, { width: dayColWidth - 10 });
-                            itemY += doc.heightOfString('Additional Workload:', { width: dayColWidth - 10, size: 8, font: 'Helvetica-Bold' }) + 3;
-                            
-                            // Workload Items
-                            content.workloads.forEach(w => {
-                                const wHeight = doc.heightOfString(`- ${w}`, { width: dayColWidth - 10, size: 8 });
-                                doc.font('Helvetica').fontSize(8).text(`- ${w}`, colX + 5, itemY, { width: dayColWidth - 10 });
-                                itemY += wHeight + 2;
-                            });
-                        }
                     } else if (content.type === 'leave') {
                         doc.fillColor('#fff7ed').rect(colX, currentY, dayColWidth, maxRowHeight).fill();
-                        doc.font('Helvetica-Bold').fontSize(8).fillColor('#f97316').text(content.leaveType, colX + 2, currentY + (maxRowHeight/2) - 4, { width: dayColWidth - 4, align: 'center' });
+                        doc.font('Helvetica-Bold').fontSize(7.5).fillColor('#f97316').text(content.leaveType, colX + 2, currentY + (maxRowHeight/2) - 4, { width: dayColWidth - 4, align: 'center' });
                         doc.fillColor('#000000');
                     } else {
-                        doc.font('Helvetica-Oblique').fontSize(8).fillColor('#ef4444').text('Not Entered', colX, currentY + (maxRowHeight/2) - 4, { width: dayColWidth, align: 'center' });
+                        doc.font('Helvetica-Oblique').fontSize(7.5).fillColor('#ef4444').text('Not Entered', colX, currentY + (maxRowHeight/2) - 4, { width: dayColWidth, align: 'center' });
                         doc.fillColor('#000000');
                     }
                     doc.strokeColor('#cbd5e1').moveTo(colX, currentY).lineTo(colX, currentY + maxRowHeight).stroke();
@@ -576,12 +546,12 @@ const generatePDF = async (req, res) => {
         });
 
         // 1. Total Activities per Staff (Horizontal Bar Chart)
-        doc.fillColor('#E8F5E9').rect(30, currentY, pageWidth - 60, 20).fill();
-        doc.fillColor('#1B5E20').fontSize(10).font('Helvetica-Bold').text('Total Activities per Staff Member', 40, currentY + 5);
+        doc.fillColor('#EBF5FB').rect(30, currentY, pageWidth - 60, 20).fill();
+        doc.fillColor('#1565C0').fontSize(10).font('Helvetica-Bold').text('Total Activities per Staff Member', 40, currentY + 5);
         currentY += 30;
 
-        const chartX = 140;
-        const maxBarWidth = pageWidth - chartX - 100;
+        const chartX = 180;
+        const maxBarWidth = pageWidth - chartX - 60;
         let maxAct = 1;
         Object.values(staffActivityCounts).forEach(s => { if (s.total > maxAct) maxAct = s.total; });
 
@@ -593,19 +563,24 @@ const generatePDF = async (req, res) => {
             const rowY = currentY + (idx * 20);
 
             if (rowY > doc.page.height - 60) {
+                drawFooter(doc);
                 doc.addPage();
                 currentY = 40;
             }
 
-            doc.fillColor('#475569').fontSize(8).font('Helvetica').text(data.name.substring(0, 20), 40, rowY + 5);
+            doc.fillColor('#475569').fontSize(8).font('Helvetica').text(data.name.substring(0, 30), 40, rowY + 5);
             doc.fillColor('#2E7D32').rect(chartX, rowY + 2, barWidth, 12).fill();
-            doc.fillColor('#1e293b').fontSize(8).text(data.total, chartX + barWidth + 5, rowY + 5);
+            doc.fillColor('#1e293b').fontSize(8).font('Helvetica-Bold').text(data.total, chartX + barWidth + 5, rowY + 5);
         });
 
         currentY += (Object.keys(staffActivityCounts).filter(id => staffActivityCounts[id].total > 0).length * 20) + 40;
 
         // 2. Papers Submitted vs Accepted (Bar Chart)
-        if (currentY > doc.page.height - 150) { doc.addPage(); currentY = 40; }
+        if (currentY > doc.page.height - 150) { 
+            drawFooter(doc);
+            doc.addPage(); 
+            currentY = 40; 
+        }
         
         doc.fillColor('#E8F5E9').rect(30, currentY, pageWidth - 60, 20).fill();
         doc.fillColor('#1B5E20').fontSize(10).font('Helvetica-Bold').text('Papers: Submitted vs Accepted', 40, currentY + 5);
@@ -628,10 +603,14 @@ const generatePDF = async (req, res) => {
         currentY += 100;
 
         // 3. Department-wise Activity Count
-        if (currentY > doc.page.height - 150) { doc.addPage(); currentY = 40; }
+        if (currentY > doc.page.height - 150) { 
+            drawFooter(doc);
+            doc.addPage(); 
+            currentY = 40; 
+        }
 
-        doc.fillColor('#E8F5E9').rect(30, currentY, pageWidth - 60, 20).fill();
-        doc.fillColor('#1B5E20').fontSize(10).font('Helvetica-Bold').text('Department-wise Distribution', 40, currentY + 5);
+        doc.fillColor('#EBF5FB').rect(30, currentY, pageWidth - 60, 20).fill();
+        doc.fillColor('#1565C0').fontSize(10).font('Helvetica-Bold').text('Department-wise Distribution', 40, currentY + 5);
         currentY += 35;
 
         Object.keys(departmentCounts).forEach((dept, i) => {
@@ -644,6 +623,7 @@ const generatePDF = async (req, res) => {
         });
 
         // Final Signatures on Analytics Page
+        drawSignatures(doc);
         drawFooter(doc);
 
         doc.end();
