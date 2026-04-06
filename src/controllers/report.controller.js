@@ -169,6 +169,9 @@ const generatePDF = async (req, res) => {
             const pageWidth = doc.page.width;
             const logoPath = path.join(__dirname, '..', '..', '..', 'dawnow-frontend', 'public', 'images', 'logo-jjcet.jpg');
             
+            // Header row background (White for logo area just in case)
+            doc.fillColor('#ffffff').rect(0, 0, pageWidth, 105).fill();
+            
             // JJCET Logo at Top Center (on every page header)
             if (fs.existsSync(logoPath)) {
                 const logoWidth = 180;
@@ -177,7 +180,7 @@ const generatePDF = async (req, res) => {
             }
 
             // Title Line
-            doc.fillColor('#000000').fontSize(11).font('Helvetica-Bold');
+            doc.fillColor('#1a5276').fontSize(11).font('Helvetica-Bold');
             const reportTitle = `Center for Research and Development - Weekly Report (${formatDate(startDate)} to ${formatDate(endDate)})`;
             doc.text(reportTitle, 30, 80, { align: 'center', width: pageWidth - 60 });
             
@@ -190,11 +193,11 @@ const generatePDF = async (req, res) => {
             const remainingWidth = tableActualWidth - infoColsWidth - nameColWidth - desigColWidth;
             const dayColWidth = remainingWidth / dateRange.length;
 
-            // Header row background (light blue)
+            // Header row background (Dark green)
             doc.rect(30, currentY, tableActualWidth, 30)
-               .fillAndStroke('#e0f2fe', '#000000');
+               .fillAndStroke('#1a5276', '#1a5276');
             
-            doc.fillColor('#000000').fontSize(9).font('Helvetica-Bold');
+            doc.fillColor('#ffffff').fontSize(9).font('Helvetica-Bold');
 
             // Header Column Texts
             doc.text('S.No', 30, currentY + 11, { width: infoColsWidth, align: 'center' });
@@ -207,7 +210,7 @@ const generatePDF = async (req, res) => {
             });
 
             // Header Bottom Thick Border
-            doc.strokeColor('#000000').lineWidth(1)
+            doc.strokeColor('#1a5276').lineWidth(1)
                .moveTo(30, currentY + 30).lineTo(pageWidth - 30, currentY + 30).stroke();
 
             return currentY + 30;
@@ -290,14 +293,21 @@ const generatePDF = async (req, res) => {
                     });
 
                     items = items.filter((v, i, a) => v && a.indexOf(v) === i).slice(0, 5);
-                    rowContents.push(items.length > 0 ? { type: 'text', items } : { type: 'empty' });
+                    const workload = (dayLog && dayLog.hoursSpent) ? dayLog.hoursSpent : null;
+                    rowContents.push(items.length > 0 || workload ? { type: 'text', items, workload } : { type: 'empty' });
                 });
 
                 let maxRowHeight = 40; 
                 rowContents.forEach(content => {
                     if (content.type === 'text') {
                         const combined = content.items.map((it, idx) => `${idx + 1}. ${it}`).join('\n');
-                        const textHeight = doc.heightOfString(combined, { width: dayColWidth - 10, size: 7.5 });
+                        let textHeight = 0;
+                        if (combined) {
+                            textHeight = doc.heightOfString(combined, { width: dayColWidth - 10, size: 7.5 });
+                        }
+                        if (content.workload) {
+                            textHeight += doc.heightOfString(`\nWorkload: ${content.workload} hours`, { width: dayColWidth - 10, size: 7.5 }) + 10;
+                        }
                         if (textHeight + 20 > maxRowHeight) maxRowHeight = textHeight + 20;
                     }
                 });
@@ -309,9 +319,9 @@ const generatePDF = async (req, res) => {
                     currentY = drawHeader(doc, currentY);
                 }
 
-                const rowColor = (sIdx % 2 === 0) ? '#f0f9ff' : '#ffffff'; // Alternating Light Blue and White
+                const rowColor = (sIdx % 2 === 0) ? '#d5f5e3' : '#d6eaf8'; // Light green and Light blue
                 doc.fillColor(rowColor).rect(30, currentY, tableActualWidth, maxRowHeight).fill();
-                doc.strokeColor('#000000').lineWidth(0.3).rect(30, currentY, tableActualWidth, maxRowHeight).stroke();
+                doc.strokeColor('#1a5276').lineWidth(0.3).rect(30, currentY, tableActualWidth, maxRowHeight).stroke();
                 
                 doc.strokeColor('#cbd5e1').lineWidth(0.3);
                 doc.moveTo(30 + infoColsWidth, currentY).lineTo(30 + infoColsWidth, currentY + maxRowHeight).stroke();
@@ -338,6 +348,11 @@ const generatePDF = async (req, res) => {
                                 itemY += itemHeight + 3;
                             }
                         });
+                        if (content.workload) {
+                            if (itemY + 10 <= currentY + maxRowHeight - 8) {
+                                doc.font('Helvetica-Bold').fontSize(7.5).text(`\nWorkload: ${content.workload} hours`, colX + 5, itemY, { width: dayColWidth - 10 });
+                            }
+                        }
                     } else if (content.type === 'leave') {
                         doc.font('Helvetica-Bold').fontSize(8).fillColor('#f97316').text('Leave', colX, currentY + (maxRowHeight/2) - 4, { width: dayColWidth, align: 'center' });
                         doc.fillColor('#000000');
@@ -400,9 +415,13 @@ const generatePDF = async (req, res) => {
                         });
                     }
 
-                    if (items.length === 0) return; // Skip "Not Entered" in monthly to save space
+                    const workload = (dayLog && dayLog.hoursSpent) ? dayLog.hoursSpent : null;
+                    if (items.length === 0 && !workload) return; // Skip "Not Entered" in monthly to save space
 
-                    const contentText = items.map((it, i) => items[0] === 'Leave' ? 'LEAVE' : `${i + 1}. ${it}`).join('\n');
+                    let contentText = items.map((it, i) => items[0] === 'Leave' ? 'LEAVE' : `${i + 1}. ${it}`).join('\n');
+                    if (workload && items[0] !== 'Leave') {
+                        contentText += (contentText ? `\n\n` : '') + `Workload: ${workload} hours`;
+                    }
                     const contentHeight = Math.max(20, doc.heightOfString(contentText, { width: pageWidth - 160, size: 8 }) + 10);
 
                     if (currentY + contentHeight > doc.page.height - 50) {
@@ -437,6 +456,8 @@ const generatePDF = async (req, res) => {
         doc.addPage();
         currentY = 30;
 
+        doc.fillColor('#ffffff').rect(0, 0, pageWidth, 110).fill();
+
         // Custom Analytics Header (with logo)
         if (fs.existsSync(logoPath)) {
             const logoWidth = 200;
@@ -445,7 +466,7 @@ const generatePDF = async (req, res) => {
             currentY += 80;
         }
 
-        doc.fillColor('#000000').fontSize(14).font('Helvetica-Bold')
+        doc.fillColor('#1a5276').fontSize(14).font('Helvetica-Bold')
            .text('Weekly Report - Activity Analytics', 30, currentY, { align: 'center', width: pageWidth - 60 });
         currentY += 40;
 
@@ -503,7 +524,7 @@ const generatePDF = async (req, res) => {
             }
 
             doc.fillColor('#475569').fontSize(8).font('Helvetica').text(data.name.substring(0, 20), 40, rowY + 5);
-            doc.fillColor('#0ea5e9').rect(chartX, rowY + 2, barWidth, 12).fill();
+            doc.fillColor(idx % 2 === 0 ? '#1a5276' : '#2ecc71').rect(chartX, rowY + 2, barWidth, 12).fill();
             doc.fillColor('#1e293b').fontSize(8).text(data.total, chartX + barWidth + 5, rowY + 5);
         });
 
@@ -517,9 +538,9 @@ const generatePDF = async (req, res) => {
         currentY += 35;
 
         const stats = [
-            { label: 'Submitted', value: paperStats.submitted, color: '#f59e0b' },
-            { label: 'Accepted', value: paperStats.accepted, color: '#10b981' },
-            { label: 'Published', value: paperStats.published, color: '#3b82f6' }
+            { label: 'Submitted', value: paperStats.submitted, color: '#2ecc71' },
+            { label: 'Accepted', value: paperStats.accepted, color: '#3498db' },
+            { label: 'Published', value: paperStats.published, color: '#1a5276' }
         ];
 
         stats.forEach((stat, i) => {
@@ -544,7 +565,7 @@ const generatePDF = async (req, res) => {
             const barWidth = (count / Math.max(tasks.length, 1)) * maxBarWidth * 2;
             const rowY = currentY + (i * 25);
             doc.fillColor('#475569').fontSize(9).text(dept, 40, rowY + 5);
-            doc.fillColor('#8b5cf6').rect(chartX, rowY + 2, Math.max(barWidth, 5), 15).fill();
+            doc.fillColor(i % 2 === 0 ? '#1a5276' : '#2ecc71').rect(chartX, rowY + 2, Math.max(barWidth, 5), 15).fill();
             doc.fillColor('#1e293b').text(count, chartX + Math.max(barWidth, 5) + 5, rowY + 5);
         });
 
@@ -719,7 +740,13 @@ const generateExcel = async (req, res) => {
                 items = items.filter((v, i, a) => v && a.indexOf(v) === i);
 
                 if (items.length > 0) {
-                    rowData.push(items.map((item, idx) => `${idx + 1}. ${item}`).join('\n\n'));
+                    let cellText = items.map((item, idx) => `${idx + 1}. ${item}`).join('\n\n');
+                    if (dayLog && dayLog.hoursSpent) {
+                        cellText += `\n\nWorkload: ${dayLog.hoursSpent} hours`;
+                    }
+                    rowData.push(cellText);
+                } else if (dayLog && dayLog.hoursSpent) {
+                    rowData.push(`Workload: ${dayLog.hoursSpent} hours`);
                 } else {
                     rowData.push('Not Entered');
                 }
