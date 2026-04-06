@@ -311,7 +311,6 @@ const generatePDF = async (req, res) => {
                     }
 
                     let items = [];
-                    let items = [];
 
                     if (dayLog && dayLog.workDone && dayLog.workDone.trim() !== '') {
                         let cleaned = cleanCellText(dayLog.workDone);
