@@ -73,3 +73,13 @@
 {"level":"info","message":"Email sent: <75eec60f-2a48-c5f6-985b-6bdd14eb274e@gmail.com>","timestamp":"2026-04-06T15:23:05.219Z"}
 {"level":"warn","message":"Backup Atlas DB disconnected! Attempting reconnect...","timestamp":"2026-04-06T15:23:05.220Z"}
 {"level":"info","message":"Health check: crashed | DB: false | Backup: false","timestamp":"2026-04-06T15:23:05.685Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-06T16:29:44.477Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-06T16:29:44.555Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-06T16:45:01.729Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-06T16:45:01.886Z"}
+{"level":"info","message":"Initiating backup sequence: c183c2f4-1d81-459b-8cca-bdfc3f37bc9f [Trigger: report-submit]","timestamp":"2026-04-06T16:47:26.018Z"}
+{"level":"info","message":"Snapshot c183c2f4-1d81-459b-8cca-bdfc3f37bc9f completed successfully. Total docs: 40","timestamp":"2026-04-06T16:47:27.258Z"}
+{"level":"info","message":"Email sent: <eb4f54f2-e283-b792-b467-8f4b46f4acc1@gmail.com>","timestamp":"2026-04-06T16:47:31.181Z"}
+{"level":"info","message":"Initiating backup sequence: caf4ada7-d0f7-46e9-944b-6fc57a28e6c0 [Trigger: report-submit]","timestamp":"2026-04-06T16:49:21.586Z"}
+{"level":"info","message":"Snapshot caf4ada7-d0f7-46e9-944b-6fc57a28e6c0 completed successfully. Total docs: 41","timestamp":"2026-04-06T16:49:22.452Z"}
+{"level":"info","message":"Email sent: <b59125e7-6fa3-5878-6a31-c9192f62ef24@gmail.com>","timestamp":"2026-04-06T16:49:25.339Z"}
