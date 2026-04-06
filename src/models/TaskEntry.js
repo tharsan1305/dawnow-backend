@@ -58,6 +58,13 @@ const taskEntrySchema = new mongoose.Schema({
     additionalWorkload4: { type: String, default: '' },
     additionalWorkload5: { type: String, default: '' },
 
+    // Section 7: Leave / Holiday
+    leaveType: {
+        type: String,
+        default: '',
+        enum: ['', 'Casual Leave', 'Medical Leave', 'Government Holiday', 'College Holiday', 'On Duty']
+    },
+
     // Dynamic Section
     dynamicAnswers: {
         type: mongoose.Schema.Types.Mixed,

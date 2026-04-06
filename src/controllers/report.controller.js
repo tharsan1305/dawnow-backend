@@ -174,11 +174,15 @@ const generatePDF = async (req, res) => {
             TaskEntry.find({ date: { $gte: startDate, $lte: endDate } })
         ]);
 
+        const fixedColsWidth = 30 + 100 + 90; 
+        const minActivityColsTotal = dateRange.length * 120;
+        const requiredPageWidth = Math.max(841.89, fixedColsWidth + minActivityColsTotal + 60);
+
         // Create PDF document (Landscape)
         const doc = new PDFDocument({ 
             layout: 'landscape', 
             margin: 30,
-            size: 'A4'
+            size: [requiredPageWidth, 595.28]
         });
 
         // Set response headers
@@ -212,12 +216,12 @@ const generatePDF = async (req, res) => {
             
             currentY = 105;
 
-            const infoColsWidth = 35; // S.No
-            const nameColWidth = 110;
+            const infoColsWidth = 30; // S.No
+            const nameColWidth = 100;
             const desigColWidth = 90;
-            const tableActualWidth = pageWidth - 60;
-            const remainingWidth = tableActualWidth - infoColsWidth - nameColWidth - desigColWidth;
-            const dayColWidth = remainingWidth / dateRange.length;
+            const availableDaySpace = pageWidth - 60 - infoColsWidth - nameColWidth - desigColWidth;
+            const dayColWidth = Math.max(120, availableDaySpace / dateRange.length);
+            const tableActualWidth = infoColsWidth + nameColWidth + desigColWidth + (dateRange.length * dayColWidth);
 
             // Header row background (Dark green)
             doc.rect(30, currentY, tableActualWidth, 30)
@@ -237,7 +241,7 @@ const generatePDF = async (req, res) => {
 
             // Header Bottom Thick Border
             doc.strokeColor('#1B5E20').lineWidth(1)
-               .moveTo(30, currentY + 30).lineTo(pageWidth - 30, currentY + 30).stroke();
+               .moveTo(30, currentY + 30).lineTo(requiredPageWidth - 30, currentY + 30).stroke();
 
             return currentY + 30;
         };
@@ -245,10 +249,10 @@ const generatePDF = async (req, res) => {
         // Footer function for each page
         const drawFooter = (doc) => {
             const footerY = doc.page.height - 60; // Safely above bottom margin
-            doc.strokeColor('#000000').lineWidth(0.5).moveTo(30, footerY - 5).lineTo(pageWidth - 30, footerY - 5).stroke();
+            doc.strokeColor('#000000').lineWidth(0.5).moveTo(30, footerY - 5).lineTo(requiredPageWidth - 30, footerY - 5).stroke();
             doc.fillColor('#000000').fontSize(10).font('Helvetica-Bold');
             doc.text('Dean, Research and Development', 30, footerY, { align: 'left', lineBreak: false });
-            doc.text('Principal', pageWidth - 130, footerY, { align: 'right', width: 100, lineBreak: false });
+            doc.text('Principal', requiredPageWidth - 130, footerY, { align: 'right', width: 100, lineBreak: false });
         };
 
         // Initial Header
@@ -261,12 +265,12 @@ const generatePDF = async (req, res) => {
         if (!isMonthly) {
             // --- WEEKLY GRID FORMAT (Existing) ---
 
-            const infoColsWidth = 35;
-            const nameColWidth = 110;
+            const infoColsWidth = 30;
+            const nameColWidth = 100;
             const desigColWidth = 90;
-            const tableActualWidth = pageWidth - 60;
-            const remainingWidth = tableActualWidth - infoColsWidth - nameColWidth - desigColWidth;
-            const dayColWidth = remainingWidth / dateRange.length;
+            const availableDaySpace = pageWidth - 60 - infoColsWidth - nameColWidth - desigColWidth;
+            const dayColWidth = Math.max(120, availableDaySpace / dateRange.length);
+            const tableActualWidth = infoColsWidth + nameColWidth + desigColWidth + (dateRange.length * dayColWidth);
 
             staffList.forEach((staff, sIdx) => {
                 const rowContents = [];
@@ -287,8 +291,15 @@ const generatePDF = async (req, res) => {
                                t.staff.toString() === staff._id.toString();
                     });
 
+                    // Handle leave override from TaskEntry
+                    const leaveTask = dayTasks.find(t => t.leaveType && t.leaveType.trim() !== '');
+                    if (leaveTask) {
+                        rowContents.push({ type: 'leave', leaveType: leaveTask.leaveType });
+                        return;
+                    }
+
                     if (dayLog && dayLog.isLeaveDay) {
-                        rowContents.push({ type: 'leave' });
+                        rowContents.push({ type: 'leave', leaveType: 'Leave' });
                         return;
                     }
 
@@ -330,24 +341,29 @@ const generatePDF = async (req, res) => {
                 let maxRowHeight = 40; 
                 rowContents.forEach(content => {
                     if (content.type === 'text') {
-                        let textHeight = 0;
+                        let textHeight = 10;
                         if (content.items.length > 0) {
-                            const combinedItems = content.items.map((it, idx) => `${idx + 1}. ${it}`).join('\n');
-                            textHeight += doc.heightOfString(combinedItems, { width: dayColWidth - 10, size: 7.5 });
+                            content.items.forEach((it, idx) => {
+                                textHeight += doc.heightOfString(`${idx + 1}. ${it}`, { width: dayColWidth - 10, size: 8 }) + 3;
+                            });
                         }
                         
                         if (content.workloads.length > 0) {
                             textHeight += 10; // Divider space
-                            textHeight += doc.heightOfString('Additional Workload:', { width: dayColWidth - 10, size: 7.5, font: 'Helvetica-Bold' });
-                            const combinedWorkloads = content.workloads.map(w => `- ${w}`).join('\n');
-                            textHeight += doc.heightOfString(combinedWorkloads, { width: dayColWidth - 10, size: 7.5 });
+                            textHeight += doc.heightOfString('Additional Workload:', { width: dayColWidth - 10, size: 8, font: 'Helvetica-Bold' }) + 3;
+                            content.workloads.forEach(w => {
+                                textHeight += doc.heightOfString(`- ${w}`, { width: dayColWidth - 10, size: 8 }) + 2;
+                            });
                         }
-                        if (textHeight + 20 > maxRowHeight) maxRowHeight = textHeight + 20;
+                        if (textHeight + 10 > maxRowHeight) maxRowHeight = textHeight + 10;
                     }
                 });
-                if (maxRowHeight > 150) maxRowHeight = 150;
 
-                if (currentY + maxRowHeight > doc.page.height - 50) {
+                // Auto-expand row height, do NOT limit to 150. Ensure we trigger page break if it's too big.
+
+                // Page break check (ensures footer has space)
+                if (currentY + maxRowHeight > doc.page.height - 80) {
+                    drawFooter(doc);
                     doc.addPage();
                     currentY = 50;
                     currentY = drawHeader(doc, currentY);
@@ -374,42 +390,37 @@ const generatePDF = async (req, res) => {
                     const colX = 30 + infoColsWidth + nameColWidth + desigColWidth + (i * dayColWidth);
                     const content = rowContents[i];
                     if (content.type === 'text') {
-                        let itemY = currentY + 10;
+                        let itemY = currentY + 7;
                         
                         // Render Research Items
                         content.items.forEach((item, idx) => {
-                            const itemHeight = doc.heightOfString(`${idx + 1}. ${item}`, { width: dayColWidth - 10, size: 7.5 });
-                            if (itemY + itemHeight <= currentY + maxRowHeight - 5) {
-                                doc.font('Helvetica').fontSize(7.5).text(`${idx + 1}. ${item}`, colX + 5, itemY, { width: dayColWidth - 10 });
-                                itemY += itemHeight + 3;
-                            }
+                            const itemHeight = doc.heightOfString(`${idx + 1}. ${item}`, { width: dayColWidth - 10, size: 8 });
+                            
+                            doc.font('Helvetica').fontSize(8).text(`${idx + 1}. ${item}`, colX + 5, itemY, { width: dayColWidth - 10 });
+                            itemY += itemHeight + 3;
+                            
                         });
 
                         // Render Additional Workload
                         if (content.workloads.length > 0) {
                             // Divider Line
-                            if (itemY + 5 <= currentY + maxRowHeight - 5) {
-                                doc.strokeColor('#1B5E20').lineWidth(0.2).moveTo(colX + 5, itemY).lineTo(colX + dayColWidth - 10, itemY).stroke();
-                                itemY += 5;
-                            }
+                            doc.strokeColor('#1B5E20').lineWidth(0.2).moveTo(colX + 5, itemY + 2).lineTo(colX + dayColWidth - 10, itemY + 2).stroke();
+                            itemY += 5;
                             
                             // Header
-                            if (itemY + 10 <= currentY + maxRowHeight - 5) {
-                                doc.font('Helvetica-Bold').fontSize(7.5).text('Additional Workload:', colX + 5, itemY, { width: dayColWidth - 10 });
-                                itemY += 10;
-                            }
+                            doc.font('Helvetica-Bold').fontSize(8).text('Additional Workload:', colX + 5, itemY, { width: dayColWidth - 10 });
+                            itemY += doc.heightOfString('Additional Workload:', { width: dayColWidth - 10, size: 8, font: 'Helvetica-Bold' }) + 3;
                             
                             // Workload Items
                             content.workloads.forEach(w => {
-                                const wHeight = doc.heightOfString(`- ${w}`, { width: dayColWidth - 10, size: 7.5 });
-                                if (itemY + wHeight <= currentY + maxRowHeight - 5) {
-                                    doc.font('Helvetica').fontSize(7.5).text(`- ${w}`, colX + 5, itemY, { width: dayColWidth - 10 });
-                                    itemY += wHeight + 2;
-                                }
+                                const wHeight = doc.heightOfString(`- ${w}`, { width: dayColWidth - 10, size: 8 });
+                                doc.font('Helvetica').fontSize(8).text(`- ${w}`, colX + 5, itemY, { width: dayColWidth - 10 });
+                                itemY += wHeight + 2;
                             });
                         }
                     } else if (content.type === 'leave') {
-                        doc.font('Helvetica-Bold').fontSize(8).fillColor('#f97316').text('Leave', colX, currentY + (maxRowHeight/2) - 4, { width: dayColWidth, align: 'center' });
+                        doc.fillColor('#fff7ed').rect(colX, currentY, dayColWidth, maxRowHeight).fill();
+                        doc.font('Helvetica-Bold').fontSize(8).fillColor('#f97316').text(content.leaveType, colX + 2, currentY + (maxRowHeight/2) - 4, { width: dayColWidth - 4, align: 'center' });
                         doc.fillColor('#000000');
                     } else {
                         doc.font('Helvetica-Oblique').fontSize(8).fillColor('#ef4444').text('Not Entered', colX, currentY + (maxRowHeight/2) - 4, { width: dayColWidth, align: 'center' });

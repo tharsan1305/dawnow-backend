@@ -141,8 +141,8 @@ const updateTask = async (req, res) => {
             return res.status(404).json({ message: 'Task not found' });
         }
 
-        if (task.status !== 'pending') {
-            return res.status(400).json({ message: 'Can only edit pending tasks' });
+        if (task.status === 'approved') {
+            return res.status(400).json({ message: 'Entry already approved. Cannot edit an approved entry.' });
         }
 
         const currentHour = new Date().getHours();
