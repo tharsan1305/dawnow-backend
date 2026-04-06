@@ -75,12 +75,23 @@ const generateSmartSentence = (task) => {
     const paperStatus = (task.paperStatus || 'Prepared').charAt(0).toUpperCase() + (task.paperStatus || 'Prepared').slice(1).toLowerCase();
     
     const patentTitle = task.patentTitle ? `"${task.patentTitle.trim()}"` : '';
-    const patentAppNo = task.patentAppNo ? `"${task.patentAppNo.trim()}"` : '""';
-    const patentPageNo = task.patentPageNo ? `"${task.patentPageNo.trim()}"` : '""';
+    const patentAppNo = task.applicationNumber || task.patentAppNo ? `"${(task.applicationNumber || task.patentAppNo).trim()}"` : '""';
+    const patentPageNo = task.pageNumber || task.patentPageNo ? `"${(task.pageNumber || task.patentPageNo).trim()}"` : '""';
+    const patentType = task.patentType ? task.patentType.trim() : 'Utility/Design';
+    const patentDate = task.filingDate ? `on "${task.filingDate.trim()}" ` : '';
     
     const projectName = task.projectName ? `"${task.projectName.trim()}"` : '';
     const fundingAgency = task.fundingAgency ? `"${task.fundingAgency.trim()}"` : '""';
-    const grantAmount = task.grantAmount ? `"${task.grantAmount.trim()}"` : '""';
+    const grantAmount = task.fundingAmount || task.grantAmount ? `"${(task.fundingAmount || task.grantAmount).trim()}"` : '""';
+
+    const bookTitle = task.bookTitle ? `"${task.bookTitle.trim()}"` : '';
+    const bookStatus = (task.bookStatus || 'Prepared').charAt(0).toUpperCase() + (task.bookStatus || 'Prepared').slice(1).toLowerCase();
+    const publisherName = task.publisherName ? `"${task.publisherName.trim()}"` : '""';
+    const isbnNumber = task.isbnNumber ? `"${task.isbnNumber.trim()}"` : '""';
+
+    const activityTitle = task.activityTitle ? `"${task.activityTitle.trim()}"` : '';
+    const organizedBy = task.organizedBy ? `"${task.organizedBy.trim()}"` : '""'; 
+    const isConference = task.activityType && task.activityType.toLowerCase().includes('conference');
 
     // Paper sentence template
     if (paperTitle) {
@@ -89,16 +100,30 @@ const generateSmartSentence = (task) => {
     
     // Patent sentence template
     if (patentTitle) {
-        return `First has Prepared a patent entitled ${patentTitle} of application No.${patentAppNo} with page No.${patentPageNo} under Indian Patent Publication.`;
+        return `First has Prepared a "${patentType}" patent entitled ${patentTitle} ${patentDate}of application No.${patentAppNo} with page No.${patentPageNo} under Indian Patent Publication.`;
     }
     
     // Project/Funding sentence template
     if (projectName) {
         return `First has Prepared a Funded project entitled ${projectName} to ${fundingAgency} for grant of Rs. ${grantAmount}.`;
     }
+
+    // Book Chapter
+    if (bookTitle) {
+        return `First Book Chapter entitled ${bookTitle} has been ${bookStatus} in ${publisherName} with ISBN No.${isbnNumber}.`;
+    }
+
+    // Conference
+    if (activityTitle && isConference) {
+        return `First has Presented a paper entitled ${activityTitle} at ${organizedBy} held at "Institution".`;
+    }
     
-    // Return original activity title if no match
-    return task.activityTitle || task.bookTitle || '';
+    // Other/General Activity
+    if (activityTitle) {
+        return activityTitle;
+    }
+    
+    return '';
 };
 
 
@@ -180,7 +205,7 @@ const generatePDF = async (req, res) => {
             }
 
             // Title Line
-            doc.fillColor('#1a5276').fontSize(11).font('Helvetica-Bold');
+            doc.fillColor('#1B5E20').fontSize(11).font('Helvetica-Bold');
             const reportTitle = `Center for Research and Development - Weekly Report (${formatDate(startDate)} to ${formatDate(endDate)})`;
             doc.text(reportTitle, 30, 80, { align: 'center', width: pageWidth - 60 });
             
@@ -195,7 +220,7 @@ const generatePDF = async (req, res) => {
 
             // Header row background (Dark green)
             doc.rect(30, currentY, tableActualWidth, 30)
-               .fillAndStroke('#1a5276', '#1a5276');
+               .fillAndStroke('#1B5E20', '#1B5E20');
             
             doc.fillColor('#ffffff').fontSize(9).font('Helvetica-Bold');
 
@@ -210,7 +235,7 @@ const generatePDF = async (req, res) => {
             });
 
             // Header Bottom Thick Border
-            doc.strokeColor('#1a5276').lineWidth(1)
+            doc.strokeColor('#1B5E20').lineWidth(1)
                .moveTo(30, currentY + 30).lineTo(pageWidth - 30, currentY + 30).stroke();
 
             return currentY + 30;
@@ -234,8 +259,6 @@ const generatePDF = async (req, res) => {
 
         if (!isMonthly) {
             // --- WEEKLY GRID FORMAT (Existing) ---
-            currentY = 145; 
-            currentY = drawHeader(doc, currentY);
 
             const infoColsWidth = 35;
             const nameColWidth = 110;
@@ -306,7 +329,7 @@ const generatePDF = async (req, res) => {
                             textHeight = doc.heightOfString(combined, { width: dayColWidth - 10, size: 7.5 });
                         }
                         if (content.workload) {
-                            textHeight += doc.heightOfString(`\nWorkload: ${content.workload} hours`, { width: dayColWidth - 10, size: 7.5 }) + 10;
+                            textHeight += doc.heightOfString(`\n📚 Workload: ${content.workload} hours`, { width: dayColWidth - 10, size: 7.5 }) + 10;
                         }
                         if (textHeight + 20 > maxRowHeight) maxRowHeight = textHeight + 20;
                     }
@@ -319,9 +342,9 @@ const generatePDF = async (req, res) => {
                     currentY = drawHeader(doc, currentY);
                 }
 
-                const rowColor = (sIdx % 2 === 0) ? '#d5f5e3' : '#d6eaf8'; // Light green and Light blue
+                const rowColor = (sIdx % 2 === 0) ? '#E3F2FD' : '#E8F5E9'; // Light blue and Light green
                 doc.fillColor(rowColor).rect(30, currentY, tableActualWidth, maxRowHeight).fill();
-                doc.strokeColor('#1a5276').lineWidth(0.3).rect(30, currentY, tableActualWidth, maxRowHeight).stroke();
+                doc.strokeColor('#1B5E20').lineWidth(0.3).rect(30, currentY, tableActualWidth, maxRowHeight).stroke();
                 
                 doc.strokeColor('#cbd5e1').lineWidth(0.3);
                 doc.moveTo(30 + infoColsWidth, currentY).lineTo(30 + infoColsWidth, currentY + maxRowHeight).stroke();
@@ -350,7 +373,7 @@ const generatePDF = async (req, res) => {
                         });
                         if (content.workload) {
                             if (itemY + 10 <= currentY + maxRowHeight - 8) {
-                                doc.font('Helvetica-Bold').fontSize(7.5).text(`\nWorkload: ${content.workload} hours`, colX + 5, itemY, { width: dayColWidth - 10 });
+                                doc.font('Helvetica-Bold').fontSize(7.5).text(`\n📚 Workload: ${content.workload} hours`, colX + 5, itemY, { width: dayColWidth - 10 });
                             }
                         }
                     } else if (content.type === 'leave') {
@@ -420,7 +443,7 @@ const generatePDF = async (req, res) => {
 
                     let contentText = items.map((it, i) => items[0] === 'Leave' ? 'LEAVE' : `${i + 1}. ${it}`).join('\n');
                     if (workload && items[0] !== 'Leave') {
-                        contentText += (contentText ? `\n\n` : '') + `Workload: ${workload} hours`;
+                        contentText += (contentText ? `\n\n` : '') + `📚 Workload: ${workload} hours`;
                     }
                     const contentHeight = Math.max(20, doc.heightOfString(contentText, { width: pageWidth - 160, size: 8 }) + 10);
 
@@ -466,7 +489,7 @@ const generatePDF = async (req, res) => {
             currentY += 80;
         }
 
-        doc.fillColor('#1a5276').fontSize(14).font('Helvetica-Bold')
+        doc.fillColor('#1B5E20').fontSize(14).font('Helvetica-Bold')
            .text('Weekly Report - Activity Analytics', 30, currentY, { align: 'center', width: pageWidth - 60 });
         currentY += 40;
 
@@ -502,8 +525,8 @@ const generatePDF = async (req, res) => {
         });
 
         // 1. Total Activities per Staff (Horizontal Bar Chart)
-        doc.fillColor('#f8fafc').rect(30, currentY, pageWidth - 60, 20).fill();
-        doc.fillColor('#1e293b').fontSize(10).font('Helvetica-Bold').text('Total Activities per Staff Member', 40, currentY + 5);
+        doc.fillColor('#E8F5E9').rect(30, currentY, pageWidth - 60, 20).fill();
+        doc.fillColor('#1B5E20').fontSize(10).font('Helvetica-Bold').text('Total Activities per Staff Member', 40, currentY + 5);
         currentY += 30;
 
         const chartX = 140;
@@ -524,7 +547,7 @@ const generatePDF = async (req, res) => {
             }
 
             doc.fillColor('#475569').fontSize(8).font('Helvetica').text(data.name.substring(0, 20), 40, rowY + 5);
-            doc.fillColor(idx % 2 === 0 ? '#1a5276' : '#2ecc71').rect(chartX, rowY + 2, barWidth, 12).fill();
+            doc.fillColor('#2E7D32').rect(chartX, rowY + 2, barWidth, 12).fill();
             doc.fillColor('#1e293b').fontSize(8).text(data.total, chartX + barWidth + 5, rowY + 5);
         });
 
@@ -533,14 +556,14 @@ const generatePDF = async (req, res) => {
         // 2. Papers Submitted vs Accepted (Bar Chart)
         if (currentY > doc.page.height - 150) { doc.addPage(); currentY = 40; }
         
-        doc.fillColor('#f8fafc').rect(30, currentY, pageWidth - 60, 20).fill();
-        doc.fillColor('#1e293b').fontSize(10).font('Helvetica-Bold').text('Papers: Submitted vs Accepted', 40, currentY + 5);
+        doc.fillColor('#E8F5E9').rect(30, currentY, pageWidth - 60, 20).fill();
+        doc.fillColor('#1B5E20').fontSize(10).font('Helvetica-Bold').text('Papers: Submitted vs Accepted', 40, currentY + 5);
         currentY += 35;
 
         const stats = [
-            { label: 'Submitted', value: paperStats.submitted, color: '#2ecc71' },
-            { label: 'Accepted', value: paperStats.accepted, color: '#3498db' },
-            { label: 'Published', value: paperStats.published, color: '#1a5276' }
+            { label: 'Submitted', value: paperStats.submitted, color: '#1565C0' },
+            { label: 'Accepted', value: paperStats.accepted, color: '#1976D2' },
+            { label: 'Published', value: paperStats.published, color: '#1E88E5' }
         ];
 
         stats.forEach((stat, i) => {
@@ -556,8 +579,8 @@ const generatePDF = async (req, res) => {
         // 3. Department-wise Activity Count
         if (currentY > doc.page.height - 150) { doc.addPage(); currentY = 40; }
 
-        doc.fillColor('#f8fafc').rect(30, currentY, pageWidth - 60, 20).fill();
-        doc.fillColor('#1e293b').fontSize(10).font('Helvetica-Bold').text('Department-wise Distribution', 40, currentY + 5);
+        doc.fillColor('#E8F5E9').rect(30, currentY, pageWidth - 60, 20).fill();
+        doc.fillColor('#1B5E20').fontSize(10).font('Helvetica-Bold').text('Department-wise Distribution', 40, currentY + 5);
         currentY += 35;
 
         Object.keys(departmentCounts).forEach((dept, i) => {
@@ -565,7 +588,7 @@ const generatePDF = async (req, res) => {
             const barWidth = (count / Math.max(tasks.length, 1)) * maxBarWidth * 2;
             const rowY = currentY + (i * 25);
             doc.fillColor('#475569').fontSize(9).text(dept, 40, rowY + 5);
-            doc.fillColor(i % 2 === 0 ? '#1a5276' : '#2ecc71').rect(chartX, rowY + 2, Math.max(barWidth, 5), 15).fill();
+            doc.fillColor('#00695C').rect(chartX, rowY + 2, Math.max(barWidth, 5), 15).fill();
             doc.fillColor('#1e293b').text(count, chartX + Math.max(barWidth, 5) + 5, rowY + 5);
         });
 
@@ -742,11 +765,11 @@ const generateExcel = async (req, res) => {
                 if (items.length > 0) {
                     let cellText = items.map((item, idx) => `${idx + 1}. ${item}`).join('\n\n');
                     if (dayLog && dayLog.hoursSpent) {
-                        cellText += `\n\nWorkload: ${dayLog.hoursSpent} hours`;
+                        cellText += `\n\n📚 Workload: ${dayLog.hoursSpent} hours`;
                     }
                     rowData.push(cellText);
                 } else if (dayLog && dayLog.hoursSpent) {
-                    rowData.push(`Workload: ${dayLog.hoursSpent} hours`);
+                    rowData.push(`📚 Workload: ${dayLog.hoursSpent} hours`);
                 } else {
                     rowData.push('Not Entered');
                 }
