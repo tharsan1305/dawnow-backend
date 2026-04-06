@@ -41,9 +41,10 @@ const cleanCellText = (text, maxLength = 240) => {
         /i have[\s\S]*?ready/i,
         /but let me correct one important thing first/i,
         /✓|✔|✗|✘/g,
-        /[Ø=Ü]/g,
+        /[Ø=ÛÜM\u00D8\u00DC\u00DB]/g,
         /\u00D8/g,  // Ø
         /\u00DC/g,  // Ü
+        /\u00DB/g,  // Û
     ];
     
     aiPatterns.forEach(pattern => {
@@ -292,44 +293,54 @@ const generatePDF = async (req, res) => {
                     }
 
                     let items = [];
+                    let workloads = [];
+
                     if (dayLog && dayLog.workDone && dayLog.workDone.trim() !== '') {
                         let cleaned = cleanCellText(dayLog.workDone);
                         if (cleaned.length > 3) items.push(cleaned);
                     }
                     
                     dayTasks.forEach(task => {
-                        // Use smart sentence generation for activities
                         const smartSentence = generateSmartSentence(task);
                         if (smartSentence) {
                             items.push(smartSentence);
                         } else {
-                            // Fallback to individual fields
                             if (task.paperTitle) items.push(`Paper: ${cleanCellText(String(task.paperTitle))}`);
                             if (task.projectName) items.push(`Project: ${cleanCellText(String(task.projectName))}`);
                             if (task.patentTitle) items.push(`Patent: ${cleanCellText(String(task.patentTitle))}`);
                             if (task.bookTitle) items.push(`Book: ${cleanCellText(String(task.bookTitle))}`);
                             if (task.activityTitle) items.push(`Activity: ${cleanCellText(String(task.activityTitle))}`);
-                            for (let i = 1; i <= 5; i++) {
-                                if (task[`additionalWorkload${i}`]) items.push(cleanCellText(String(task[`additionalWorkload${i}`])));
+                        }
+
+                        // Collect additional workloads
+                        for (let i = 1; i <= 5; i++) {
+                            const wField = task[`additionalWorkload${i}`];
+                            if (wField && wField.trim() !== '') {
+                                workloads.push(cleanCellText(wField));
                             }
                         }
                     });
 
-                    items = items.filter((v, i, a) => v && a.indexOf(v) === i).slice(0, 5);
-                    const workload = (dayLog && dayLog.hoursSpent) ? dayLog.hoursSpent : null;
-                    rowContents.push(items.length > 0 || workload ? { type: 'text', items, workload } : { type: 'empty' });
+                    items = items.filter((v, i, a) => v && a.indexOf(v) === i);
+                    workloads = workloads.filter((v, i, a) => v && a.indexOf(v) === i);
+
+                    rowContents.push(items.length > 0 || workloads.length > 0 ? { type: 'text', items, workloads } : { type: 'empty' });
                 });
 
                 let maxRowHeight = 40; 
                 rowContents.forEach(content => {
                     if (content.type === 'text') {
-                        const combined = content.items.map((it, idx) => `${idx + 1}. ${it}`).join('\n');
                         let textHeight = 0;
-                        if (combined) {
-                            textHeight = doc.heightOfString(combined, { width: dayColWidth - 10, size: 7.5 });
+                        if (content.items.length > 0) {
+                            const combinedItems = content.items.map((it, idx) => `${idx + 1}. ${it}`).join('\n');
+                            textHeight += doc.heightOfString(combinedItems, { width: dayColWidth - 10, size: 7.5 });
                         }
-                        if (content.workload) {
-                            textHeight += doc.heightOfString(`\n📚 Workload: ${content.workload} hours`, { width: dayColWidth - 10, size: 7.5 }) + 10;
+                        
+                        if (content.workloads.length > 0) {
+                            textHeight += 10; // Divider space
+                            textHeight += doc.heightOfString('Additional Workload:', { width: dayColWidth - 10, size: 7.5, font: 'Helvetica-Bold' });
+                            const combinedWorkloads = content.workloads.map(w => `- ${w}`).join('\n');
+                            textHeight += doc.heightOfString(combinedWorkloads, { width: dayColWidth - 10, size: 7.5 });
                         }
                         if (textHeight + 20 > maxRowHeight) maxRowHeight = textHeight + 20;
                     }
@@ -364,17 +375,38 @@ const generatePDF = async (req, res) => {
                     const content = rowContents[i];
                     if (content.type === 'text') {
                         let itemY = currentY + 10;
+                        
+                        // Render Research Items
                         content.items.forEach((item, idx) => {
                             const itemHeight = doc.heightOfString(`${idx + 1}. ${item}`, { width: dayColWidth - 10, size: 7.5 });
-                            if (itemY + itemHeight <= currentY + maxRowHeight - 8) {
+                            if (itemY + itemHeight <= currentY + maxRowHeight - 5) {
                                 doc.font('Helvetica').fontSize(7.5).text(`${idx + 1}. ${item}`, colX + 5, itemY, { width: dayColWidth - 10 });
                                 itemY += itemHeight + 3;
                             }
                         });
-                        if (content.workload) {
-                            if (itemY + 10 <= currentY + maxRowHeight - 8) {
-                                doc.font('Helvetica-Bold').fontSize(7.5).text(`\n📚 Workload: ${content.workload} hours`, colX + 5, itemY, { width: dayColWidth - 10 });
+
+                        // Render Additional Workload
+                        if (content.workloads.length > 0) {
+                            // Divider Line
+                            if (itemY + 5 <= currentY + maxRowHeight - 5) {
+                                doc.strokeColor('#1B5E20').lineWidth(0.2).moveTo(colX + 5, itemY).lineTo(colX + dayColWidth - 10, itemY).stroke();
+                                itemY += 5;
                             }
+                            
+                            // Header
+                            if (itemY + 10 <= currentY + maxRowHeight - 5) {
+                                doc.font('Helvetica-Bold').fontSize(7.5).text('Additional Workload:', colX + 5, itemY, { width: dayColWidth - 10 });
+                                itemY += 10;
+                            }
+                            
+                            // Workload Items
+                            content.workloads.forEach(w => {
+                                const wHeight = doc.heightOfString(`- ${w}`, { width: dayColWidth - 10, size: 7.5 });
+                                if (itemY + wHeight <= currentY + maxRowHeight - 5) {
+                                    doc.font('Helvetica').fontSize(7.5).text(`- ${w}`, colX + 5, itemY, { width: dayColWidth - 10 });
+                                    itemY += wHeight + 2;
+                                }
+                            });
                         }
                     } else if (content.type === 'leave') {
                         doc.font('Helvetica-Bold').fontSize(8).fillColor('#f97316').text('Leave', colX, currentY + (maxRowHeight/2) - 4, { width: dayColWidth, align: 'center' });
@@ -418,6 +450,8 @@ const generatePDF = async (req, res) => {
                     });
 
                     let items = [];
+                    let workloads = [];
+
                     if (dayLog && dayLog.isLeaveDay) items = ['Leave'];
                     else {
                         if (dayLog && dayLog.workDone) {
@@ -435,15 +469,21 @@ const generatePDF = async (req, res) => {
                                 if (task.bookTitle) items.push(`Book: ${cleanCellText(String(task.bookTitle))}`);
                                 if (task.activityTitle) items.push(`Activity: ${cleanCellText(String(task.activityTitle))}`);
                             }
+
+                            for (let i = 1; i <= 5; i++) {
+                                const wVal = task[`additionalWorkload${i}`];
+                                if (wVal && wVal.trim() !== '') {
+                                    workloads.push(cleanCellText(wVal));
+                                }
+                            }
                         });
                     }
 
-                    const workload = (dayLog && dayLog.hoursSpent) ? dayLog.hoursSpent : null;
-                    if (items.length === 0 && !workload) return; // Skip "Not Entered" in monthly to save space
+                    if (items.length === 0 && workloads.length === 0) return; 
 
                     let contentText = items.map((it, i) => items[0] === 'Leave' ? 'LEAVE' : `${i + 1}. ${it}`).join('\n');
-                    if (workload && items[0] !== 'Leave') {
-                        contentText += (contentText ? `\n\n` : '') + `📚 Workload: ${workload} hours`;
+                    if (workloads.length > 0 && items[0] !== 'Leave') {
+                        contentText += (contentText ? `\n─────────────────────\n` : '') + `Additional Workload:\n` + workloads.map(w => `- ${w}`).join('\n');
                     }
                     const contentHeight = Math.max(20, doc.heightOfString(contentText, { width: pageWidth - 160, size: 8 }) + 10);
 
@@ -761,15 +801,22 @@ const generateExcel = async (req, res) => {
                 });
 
                 items = items.filter((v, i, a) => v && a.indexOf(v) === i);
+                const workloads = [];
+                dayTasks.forEach(task => {
+                    for (let i = 1; i <= 5; i++) {
+                        const w = task[`additionalWorkload${i}`];
+                        if (w && w.trim() !== '') workloads.push(w.trim());
+                    }
+                });
 
                 if (items.length > 0) {
                     let cellText = items.map((item, idx) => `${idx + 1}. ${item}`).join('\n\n');
-                    if (dayLog && dayLog.hoursSpent) {
-                        cellText += `\n\n📚 Workload: ${dayLog.hoursSpent} hours`;
+                    if (workloads.length > 0) {
+                        cellText += `\n\nAdditional Workload:\n` + workloads.map(w => `- ${w}`).join('\n');
                     }
                     rowData.push(cellText);
-                } else if (dayLog && dayLog.hoursSpent) {
-                    rowData.push(`📚 Workload: ${dayLog.hoursSpent} hours`);
+                } else if (workloads.length > 0) {
+                    rowData.push(`Additional Workload:\n` + workloads.map(w => `- ${w}`).join('\n'));
                 } else {
                     rowData.push('Not Entered');
                 }
