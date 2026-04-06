@@ -243,11 +243,11 @@ const generatePDF = async (req, res) => {
 
         // Footer function for each page
         const drawFooter = (doc) => {
-            const footerY = doc.page.height - 40;
+            const footerY = doc.page.height - 60; // Safely above bottom margin
             doc.strokeColor('#000000').lineWidth(0.5).moveTo(30, footerY - 5).lineTo(pageWidth - 30, footerY - 5).stroke();
             doc.fillColor('#000000').fontSize(10).font('Helvetica-Bold');
-            doc.text('Dean, Research and Development', 30, footerY, { align: 'left' });
-            doc.text('Principal', pageWidth - 130, footerY, { align: 'right', width: 100 });
+            doc.text('Dean, Research and Development', 30, footerY, { align: 'left', lineBreak: false });
+            doc.text('Principal', pageWidth - 130, footerY, { align: 'right', width: 100, lineBreak: false });
         };
 
         // Initial Header
@@ -776,7 +776,7 @@ const generateExcel = async (req, res) => {
             });
 
             const row = sheet.addRow(rowData);
-            const bgColor = sIdx % 2 === 0 ? 'FFE0F2FE' : 'FFDCFCE7';
+            const bgColor = sIdx % 2 === 0 ? 'FFE3F2FD' : 'FFE8F5E9';
             
             row.eachCell((cell, colIdx) => {
                 cell.fill = {
