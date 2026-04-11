@@ -38,9 +38,9 @@ const protect = async (req, res, next) => {
     }
 };
 
-// Staff middleware - verify role is staff
+// Staff middleware - verify role is staff OR admin
 const isStaff = (req, res, next) => {
-    if (req.user && req.user.role === 'staff') {
+    if (req.user && (req.user.role === 'staff' || req.user.role === 'admin')) {
         next();
     } else {
         return res.status(403).json({ message: 'Access denied. Staff only.' });

@@ -25,6 +25,9 @@ const noticeRoutes = require('./src/routes/notice.routes');
 const analyticsRoutes = require('./src/routes/analytics.routes');
 const answerRoutes = require('./src/routes/answer.routes');
 const projectRoutes = require('./src/routes/project.routes');
+const leaveRoutes = require('./src/routes/leave.routes');
+const settingsRoutes = require('./src/routes/settings.routes');
+const announcementsRoutes = require('./src/routes/notice.routes'); // Alias
 
 // Initialize express
 const app = express();
@@ -45,15 +48,15 @@ app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
+// Body parser
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
 // CORS configuration
 app.use(cors({
     origin: ['http://localhost:5173', 'http://localhost:5174', process.env.CLIENT_URL].filter(Boolean),
     credentials: true
 }));
-
-// Body parser
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Logging
 if (process.env.NODE_ENV === 'development') {
@@ -94,6 +97,9 @@ app.use('/api/notices', noticeRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/answers', answerRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/leave', leaveRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/announcements', announcementsRoutes);
 
 // Backup & Recovery System
 require('./src/backup/crashDetector').startCrashDetector();
@@ -145,10 +151,24 @@ const startServer = async () => {
         io.on('connection', (socket) => {
             console.log('User connected:', socket.id);
 
-            // Join room based on role
-            socket.on('join', (role) => {
-                socket.join(role);
-                console.log(`Socket ${socket.id} joined room: ${role}`);
+            // Join room based on role and metadata
+            socket.on('join', (data) => {
+                const { role, dept, userId } = typeof data === 'string' ? { role: data } : data;
+                
+                if (role) {
+                    socket.join(role);
+                    console.log(`Socket ${socket.id} joined role room: ${role}`);
+                }
+
+                if (dept) {
+                    socket.join(`dept_${dept}`);
+                    console.log(`Socket ${socket.id} joined dept room: dept_${dept}`);
+                }
+
+                if (userId) {
+                    socket.join(`user_${userId}`);
+                    console.log(`Socket ${socket.id} joined user room: user_${userId}`);
+                }
             });
 
             socket.on('disconnect', () => {

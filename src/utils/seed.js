@@ -40,12 +40,12 @@ const seed = async () => {
 
         if (questionsCount === 0) {
             const defaultQuestions = [
-                { text: 'Number of journal publications this month', answerType: 'number', category: 'Research', order: 1 },
-                { text: 'Number of conference papers presented', answerType: 'number', category: 'Research', order: 2 },
-                { text: 'Number of students guided for projects', answerType: 'number', category: 'Teaching', order: 3 },
-                { text: 'Number of workshops/seminars attended', answerType: 'number', category: 'Other', order: 4 },
-                { text: 'Any administrative responsibilities completed?', answerType: 'yesno', category: 'Administrative', order: 5 },
-                { text: 'Any community service activities?', answerType: 'yesno', category: 'Other', order: 6 }
+                { questionText: 'Number of journal publications this month', type: 'number', section: 'paper', order: 1 },
+                { questionText: 'Number of conference papers presented', type: 'number', section: 'paper', order: 2 },
+                { questionText: 'Number of students guided for projects', type: 'number', section: 'project', order: 3 },
+                { questionText: 'Number of workshops/seminars attended', type: 'number', section: 'activity', order: 4 },
+                { questionText: 'Any administrative responsibilities completed?', type: 'yesno', section: 'additional', order: 5 },
+                { questionText: 'Any community service activities?', type: 'yesno', section: 'general', order: 6 }
             ];
 
             await Question.insertMany(defaultQuestions);

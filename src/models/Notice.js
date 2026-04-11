@@ -19,9 +19,26 @@ const noticeSchema = new mongoose.Schema({
     },
     priority: {
         type: String,
-        enum: ["Normal", "High", "Urgent"],
+        enum: ["Normal", "Important", "Urgent"],
         default: "Normal"
     },
+    targetType: {
+        type: String,
+        enum: ["All", "Department", "Staff"],
+        default: "All"
+    },
+    targetDepartment: {
+        type: String,
+        default: ""
+    },
+    targetUsers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    readers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     deadline: Date,
     link: String,
     attachments: [String],

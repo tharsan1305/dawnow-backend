@@ -73,10 +73,27 @@ const taskEntrySchema = new mongoose.Schema({
 
     status: {
         type: String,
-        enum: ['pending', 'approved', 'rejected'],
+        enum: ['pending', 'approved', 'rejected', 'Completed'],
         default: 'pending'
     },
+    approvalType: {
+        type: String,
+        enum: ['auto', 'manual']
+    },
+    approvedBy: {
+        type: String
+    },
+    approvedAt: {
+        type: Date
+    },
+    submittedAt: {
+        type: Date
+    },
     adminNote: {
+        type: String,
+        default: ''
+    },
+    summaryCorrection: {
         type: String,
         default: ''
     }

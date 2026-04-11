@@ -3,6 +3,8 @@ const User = require('../models/User');
 const DailyLog = require('../models/DailyLog');
 const PDFDocument = require('pdfkit');
 const ExcelJS = require('exceljs');
+const PDFReportGenerator = require('../utils/PDFReportGenerator');
+const PerPersonReportGenerator = require('../utils/PerPersonReportGenerator');
 const path = require('path');
 const fs = require('fs');
 
@@ -20,7 +22,7 @@ const getDatesInRange = (startDate, endDate) => {
 };
 
 // Enhanced text cleaning with AI text removal
-const cleanCellText = (text, maxLength = 240) => {
+const cleanCellText = (text, maxLength = 3000) => {
     if (!text || typeof text !== 'string') return '';
     
     // AI response patterns to remove
@@ -53,78 +55,87 @@ const cleanCellText = (text, maxLength = 240) => {
     
     // Strip URLs
     text = text.replace(/https?:\/\/[^\s]+/g, '');
-    // Strip newlines, tabs, and carriage returns
-    text = text.replace(/[\r\n\t]+/g, ' ');
-    // Strip excessive whitespaces
-    text = text.replace(/\s{2,}/g, ' ');
+    
+    // Preserve single newlines but strip tabs and carriage returns
+    text = text.replace(/[\r\t]+/g, ' ');
+    // Normalize newlines (remove excessive empty lines)
+    text = text.replace(/\n{3,}/g, '\n\n');
+    
+    // Strip excessive whitespaces (horizontal only)
+    text = text.replace(/[ \t]{2,}/g, ' ');
     text = text.trim();
     
     // Final check for AI-like sentences
     if (text.toLowerCase().includes("got it") && text.toLowerCase().includes("let me correct")) return '';
     
-    // Truncate to maxLength
+    // Truncate to maxLength (increased to handle full content)
     return text.length > maxLength
         ? text.substring(0, maxLength) + '...'
         : text;
 };
 
-// Smart Sentence Generator for Activities
-const generateSmartSentence = (task) => {
+// Smart Sentence Generator for Activities - Returns an array of sentences
+const getTaskSentences = (task) => {
+    const sentences = [];
+    
     const paperTitle = task.paperTitle ? `"${task.paperTitle.trim()}"` : '';
     const journalName = task.journalName ? `"${task.journalName.trim()}"` : '""';
     const impactFactor = task.impactFactor ? `"${task.impactFactor.trim()}"` : '""';
     const paperStatus = (task.paperStatus || 'Prepared').charAt(0).toUpperCase() + (task.paperStatus || 'Prepared').slice(1).toLowerCase();
     
+    if (paperTitle) {
+        sentences.push(`Paper entitled ${paperTitle} has been ${paperStatus} to the SCI indexed journal ${journalName} which has the impact factor of ${impactFactor}.`);
+    }
+
+    const projectName = task.projectName ? `"${task.projectName.trim()}"` : '';
+    const fundingAgency = task.fundingAgency ? `"${task.fundingAgency.trim()}"` : '""';
+    const grantAmount = task.fundingAmount || task.grantAmount ? `"${(task.fundingAmount || task.grantAmount).trim()}"` : '""';
+    const projectStatus = task.projectStatus || 'Prepared';
+
+    if (projectName) {
+        sentences.push(`Funded project entitled ${projectName} to ${fundingAgency} for grant of Rs. ${grantAmount} (Status: ${projectStatus}).`);
+    }
+
     const patentTitle = task.patentTitle ? `"${task.patentTitle.trim()}"` : '';
     const patentAppNo = task.applicationNumber || task.patentAppNo ? `"${(task.applicationNumber || task.patentAppNo).trim()}"` : '""';
     const patentPageNo = task.pageNumber || task.patentPageNo ? `"${(task.pageNumber || task.patentPageNo).trim()}"` : '""';
     const patentType = task.patentType ? task.patentType.trim() : 'Utility/Design';
     const patentDate = task.filingDate ? `on "${task.filingDate.trim()}" ` : '';
-    
-    const projectName = task.projectName ? `"${task.projectName.trim()}"` : '';
-    const fundingAgency = task.fundingAgency ? `"${task.fundingAgency.trim()}"` : '""';
-    const grantAmount = task.fundingAmount || task.grantAmount ? `"${(task.fundingAmount || task.grantAmount).trim()}"` : '""';
+
+    if (patentTitle) {
+        sentences.push(`Prepared a "${patentType}" patent entitled ${patentTitle} ${patentDate}of application No.${patentAppNo} with page No.${patentPageNo} under Indian Patent Publication.`);
+    }
 
     const bookTitle = task.bookTitle ? `"${task.bookTitle.trim()}"` : '';
     const bookStatus = (task.bookStatus || 'Prepared').charAt(0).toUpperCase() + (task.bookStatus || 'Prepared').slice(1).toLowerCase();
     const publisherName = task.publisherName ? `"${task.publisherName.trim()}"` : '""';
     const isbnNumber = task.isbnNumber ? `"${task.isbnNumber.trim()}"` : '""';
 
+    if (bookTitle) {
+        sentences.push(`Book Chapter entitled ${bookTitle} has been ${bookStatus} in ${publisherName} with ISBN No.${isbnNumber}.`);
+    }
+
     const activityTitle = task.activityTitle ? `"${task.activityTitle.trim()}"` : '';
     const organizedBy = task.organizedBy ? `"${task.organizedBy.trim()}"` : '""'; 
     const isConference = task.activityType && task.activityType.toLowerCase().includes('conference');
 
-    // Paper sentence template
-    if (paperTitle) {
-        return `First Paper entitled ${paperTitle} has been ${paperStatus} to the SCI indexed journal ${journalName} which has the impact factor of ${impactFactor}.`;
-    }
-    
-    // Patent sentence template
-    if (patentTitle) {
-        return `First has Prepared a "${patentType}" patent entitled ${patentTitle} ${patentDate}of application No.${patentAppNo} with page No.${patentPageNo} under Indian Patent Publication.`;
-    }
-    
-    // Project/Funding sentence template
-    if (projectName) {
-        return `First has Prepared a Funded project entitled ${projectName} to ${fundingAgency} for grant of Rs. ${grantAmount}.`;
-    }
-
-    // Book Chapter
-    if (bookTitle) {
-        return `First Book Chapter entitled ${bookTitle} has been ${bookStatus} in ${publisherName} with ISBN No.${isbnNumber}.`;
-    }
-
-    // Conference
-    if (activityTitle && isConference) {
-        return `First has Presented a paper entitled ${activityTitle} at ${organizedBy} held at "Institution".`;
-    }
-    
-    // Other/General Activity
     if (activityTitle) {
-        return activityTitle;
+        if (isConference) {
+            sentences.push(`Presented a paper entitled ${activityTitle} at ${organizedBy} held at "Institution".`);
+        } else {
+            sentences.push(activityTitle);
+        }
+    }
+
+    // Include additional workloads if present
+    for (let i = 1; i <= 5; i++) {
+        const val = task[`additionalWorkload${i}`];
+        if (val && val.trim()) {
+            sentences.push(val.trim());
+        }
     }
     
-    return '';
+    return sentences;
 };
 
 
@@ -136,7 +147,46 @@ const formatDate = (date) => {
     return `${d}.${m}.${y}`;
 };
 
-// @desc    Generate PDF report (Weekly Grid Format)
+// Helper: Format content for a single day cell
+const formatDayContent = (dayLog, dayTasks) => {
+    // Check for admin correction first - this overrides auto-generation
+    const correctionTask = dayTasks.find(t => t.summaryCorrection && t.summaryCorrection.trim() !== '');
+    if (correctionTask) {
+        // Split by newlines if it's stored as a block but displayed as a list
+        const items = correctionTask.summaryCorrection.split('\n').filter(s => s.trim() !== '');
+        return { type: 'text', items, isCorrection: true };
+    }
+
+    // Handle leave
+    const leaveTask = dayTasks.find(t => t.leaveType && t.leaveType.trim() !== '');
+    if (leaveTask) {
+        return { type: 'leave', leaveType: leaveTask.leaveType };
+    }
+    if (dayLog && dayLog.isLeaveDay) {
+        return { type: 'leave', leaveType: 'Leave' };
+    }
+
+    // Gather all content
+    let items = [];
+    if (dayLog && dayLog.workDone && dayLog.workDone.trim() !== '') {
+        let cleaned = cleanCellText(dayLog.workDone);
+        if (cleaned.length > 3) items.push(cleaned);
+    }
+
+    dayTasks.forEach(task => {
+        const sentences = getTaskSentences(task);
+        if (sentences.length > 0) {
+            items.push(...sentences);
+        }
+    });
+
+    // Deduplicate
+    items = items.filter((v, i, a) => v && a.indexOf(v) === i);
+
+    return items.length > 0 ? { type: 'text', items } : { type: 'empty' };
+};
+
+// @desc    Generate PDF report (Weekly Grid Format with Analytics)
 // @route   GET /api/reports/pdf
 // @access  Private (Admin)
 const generatePDF = async (req, res) => {
@@ -147,14 +197,14 @@ const generatePDF = async (req, res) => {
         if (!from || !to) {
             const now = new Date();
             const day = now.getDay();
-            const diff = now.getDate() - day + (day === 0 ? -6 : 1); // get Monday
+            const diff = now.getDate() - day + (day === 0 ? -6 : 1);
             const monday = new Date(now.setDate(diff));
             monday.setHours(0, 0, 0, 0);
-            
+
             const saturday = new Date(monday);
             saturday.setDate(monday.getDate() + 5);
             saturday.setHours(23, 59, 59, 999);
-            
+
             if (!from) from = monday.toISOString();
             if (!to) to = saturday.toISOString();
         }
@@ -163,469 +213,119 @@ const generatePDF = async (req, res) => {
         const endDate = new Date(to);
         const dateRange = getDatesInRange(startDate, endDate);
 
-        // Fetch staff
+        // Fetch data
         const staffQuery = { role: 'staff' };
         if (dept) staffQuery.department = dept;
         const staffList = await User.find(staffQuery).sort({ name: 1 });
 
-        // Fetch logs and tasks for all staff in range
         const [logs, tasks] = await Promise.all([
             DailyLog.find({ date: { $gte: startDate, $lte: endDate } }),
             TaskEntry.find({ date: { $gte: startDate, $lte: endDate } })
         ]);
 
-        // Create PDF document (Landscape)
-        const doc = new PDFDocument({ 
-            layout: 'landscape', 
-            margin: 30,
-            size: 'A4'
-        });
+        // Initialize PDF Generator
+        const generator = new PDFReportGenerator();
+        const doc = generator.createDocument();
 
         // Set response headers
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename=CFRD_Weekly_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+        res.setHeader(
+            'Content-Disposition',
+            `attachment; filename=CFRD_Weekly_Report_${new Date().toISOString().split('T')[0]}.pdf`
+        );
 
+        // Calculate column widths
+        generator.calculateColumnWidths(dateRange);
+
+        // Draw title
+        const titleText = 'Center for Research and Development';
+        const subtitleText = `Weekly Report (${formatDate(startDate)} to ${formatDate(endDate)})`;
+        generator.drawTitle(titleText, subtitleText);
+
+        // Draw table header
+        generator.drawTableHeader();
+
+        // Draw data rows
+        staffList.forEach((staff, staffIndex) => {
+            const dayContents = [];
+
+            dateRange.forEach((date) => {
+                const dayLog = logs.find((l) => {
+                    const lDate = new Date(l.date);
+                    return (
+                        lDate.getDate() === date.getDate() &&
+                        lDate.getMonth() === date.getMonth() &&
+                        lDate.getFullYear() === date.getFullYear() &&
+                        l.staff.toString() === staff._id.toString()
+                    );
+                });
+
+                const dayTasks = tasks.filter((t) => {
+                    const tDate = new Date(t.date);
+                    return (
+                        tDate.getDate() === date.getDate() &&
+                        tDate.getMonth() === date.getMonth() &&
+                        tDate.getFullYear() === date.getFullYear() &&
+                        t.staff.toString() === staff._id.toString()
+                    );
+                });
+
+                const content = formatDayContent(dayLog, dayTasks);
+                dayContents.push(content);
+            });
+
+            // Draw row
+            generator.drawTableRow({
+                sNo: staffIndex + 1,
+                name: staff.name,
+                designation: `${staff.designation || 'Staff'} / ${staff.department || 'CFRD'}`,
+                dayContents: dayContents,
+                isOdd: staffIndex % 2 === 1,
+            });
+        });
+
+        // Prepare analytics
+        const staffStats = staffList.map((staff) => {
+            const staffTasks = tasks.filter((t) => t.staff.toString() === staff._id.toString());
+            return {
+                name: staff.name,
+                taskCount: staffTasks.length,
+            };
+        });
+
+        const activityStats = {
+            paper: tasks.filter((t) => t.paperTitle).length,
+            project: tasks.filter((t) => t.projectName).length,
+            patent: tasks.filter((t) => t.patentTitle).length,
+            book: tasks.filter((t) => t.bookTitle).length,
+        };
+
+        const dateStats = dateRange.map((date) => {
+            const dailyTasks = tasks.filter((t) => {
+                const tDate = new Date(t.date);
+                return (
+                    tDate.getDate() === date.getDate() &&
+                    tDate.getMonth() === date.getMonth() &&
+                    tDate.getFullYear() === date.getFullYear()
+                );
+            });
+            return {
+                date: formatDate(date),
+                count: dailyTasks.length,
+            };
+        });
+
+        // Set analytics and finalize
+        generator.setAnalyticsData({
+            staffStats,
+            activityStats,
+            dateStats,
+        });
+
+        generator.finalize();
+
+        // Pipe document to response
         doc.pipe(res);
-
-        const pageWidth = doc.page.width;
-        const logoPath = path.join(__dirname, '..', '..', '..', 'dawnow-frontend', 'public', 'images', 'logo-jjcet.jpg');
-
-        // --- Header Section Drawing Function (to reuse for new pages) ---
-        const drawHeader = (doc, currentY) => {
-            const pageWidth = doc.page.width;
-            const logoPath = path.join(__dirname, '..', '..', '..', 'dawnow-frontend', 'public', 'images', 'logo-jjcet.jpg');
-            
-            // Header row background (White for logo area just in case)
-            doc.fillColor('#ffffff').rect(0, 0, pageWidth, 105).fill();
-            
-            // JJCET Logo at Top Center (on every page header)
-            if (fs.existsSync(logoPath)) {
-                const logoWidth = 180;
-                const logoX = (pageWidth - logoWidth) / 2;
-                doc.image(logoPath, logoX, 15, { width: logoWidth });
-            }
-
-            // Title Line
-            doc.fillColor('#1B5E20').fontSize(11).font('Helvetica-Bold');
-            const reportTitle = `Center for Research and Development - Weekly Report (${formatDate(startDate)} to ${formatDate(endDate)})`;
-            doc.text(reportTitle, 30, 80, { align: 'center', width: pageWidth - 60 });
-            
-            currentY = 105;
-
-            const infoColsWidth = 25; // S.No
-            const nameColWidth = 90;
-            const desigColWidth = 80;
-            const availableDaySpace = pageWidth - 60 - infoColsWidth - nameColWidth - desigColWidth;
-            const dayColWidth = availableDaySpace / dateRange.length;
-            const tableActualWidth = pageWidth - 60;
-
-            // Header row background (Dark green)
-            doc.rect(30, currentY, tableActualWidth, 30)
-               .fillAndStroke('#1B5E20', '#1B5E20');
-            
-            doc.fillColor('#ffffff').fontSize(8).font('Helvetica-Bold');
-
-            // Header Column Texts
-            doc.text('S.No', 30, currentY + 11, { width: infoColsWidth, align: 'center' });
-            doc.text('Name', 30 + infoColsWidth, currentY + 11, { width: nameColWidth, align: 'center' });
-            doc.text('Designation', 30 + infoColsWidth + nameColWidth, currentY + 11, { width: desigColWidth, align: 'center' });
-
-            dateRange.forEach((date, i) => {
-                const x = 30 + infoColsWidth + nameColWidth + desigColWidth + (i * dayColWidth);
-                doc.text(formatDate(date), x, currentY + 11, { width: dayColWidth, align: 'center' });
-            });
-
-            // Header Bottom Thick Border
-            doc.strokeColor('#1B5E20').lineWidth(1)
-               .moveTo(30, currentY + 30).lineTo(pageWidth - 30, currentY + 30).stroke();
-
-            return currentY + 30;
-        };
-
-        let pageNumber = 1;
-        // Footer function for each page
-        const drawFooter = (doc) => {
-            const footerY = doc.page.height - 30;
-            doc.fillColor('#000000').fontSize(9).font('Helvetica');
-            doc.text(`Page ${pageNumber}`, 30, footerY, { align: 'center', width: pageWidth - 60 });
-            pageNumber++;
-        };
-
-        const drawSignatures = (doc) => {
-            const sigY = doc.page.height - 60;
-            doc.strokeColor('#000000').lineWidth(0.5);
-            doc.moveTo(30, sigY - 5).lineTo(200, sigY - 5).stroke();
-            doc.fillColor('#000000').fontSize(10).font('Helvetica-Bold');
-            doc.text('Dean, Research and Development', 30, sigY, { align: 'left', lineBreak: false });
-            
-            doc.moveTo(pageWidth - 200, sigY - 5).lineTo(pageWidth - 30, sigY - 5).stroke();
-            doc.text('Principal', pageWidth - 200, sigY, { align: 'right', width: 170, lineBreak: false });
-        };
-
-        // Initial Header
-        currentY = drawHeader(doc, 0);
-
-        // --- Layout Selection ---
-        diffDays = Math.ceil(Math.abs(endDate - startDate) / (1000 * 60 * 60 * 24));
-        const isMonthly = diffDays > 7;
-
-        if (!isMonthly) {
-            // --- WEEKLY GRID FORMAT (Existing) ---
-
-            const infoColsWidth = 25;
-            const nameColWidth = 90;
-            const desigColWidth = 80;
-            const availableDaySpace = pageWidth - 60 - infoColsWidth - nameColWidth - desigColWidth;
-            const dayColWidth = availableDaySpace / dateRange.length;
-            const tableActualWidth = pageWidth - 60;
-
-            staffList.forEach((staff, sIdx) => {
-                const rowContents = [];
-                dateRange.forEach(date => {
-                    const dayLog = logs.find(l => {
-                        const lDate = new Date(l.date);
-                        return lDate.getDate() === date.getDate() && 
-                               lDate.getMonth() === date.getMonth() && 
-                               lDate.getFullYear() === date.getFullYear() &&
-                               l.staff.toString() === staff._id.toString();
-                    });
-
-                    const dayTasks = tasks.filter(t => {
-                        const tDate = new Date(t.date);
-                        return tDate.getDate() === date.getDate() && 
-                               tDate.getMonth() === date.getMonth() && 
-                               tDate.getFullYear() === date.getFullYear() &&
-                               t.staff.toString() === staff._id.toString();
-                    });
-
-                    // Handle leave override from TaskEntry
-                    const leaveTask = dayTasks.find(t => t.leaveType && t.leaveType.trim() !== '');
-                    if (leaveTask) {
-                        rowContents.push({ type: 'leave', leaveType: leaveTask.leaveType });
-                        return;
-                    }
-
-                    if (dayLog && dayLog.isLeaveDay) {
-                        rowContents.push({ type: 'leave', leaveType: 'Leave' });
-                        return;
-                    }
-
-                    let items = [];
-
-                    if (dayLog && dayLog.workDone && dayLog.workDone.trim() !== '') {
-                        let cleaned = cleanCellText(dayLog.workDone);
-                        if (cleaned.length > 3) items.push(cleaned);
-                    }
-                    
-                    dayTasks.forEach(task => {
-                        const smartSentence = generateSmartSentence(task);
-                        if (smartSentence) {
-                            items.push(smartSentence);
-                        } else {
-                            if (task.paperTitle) items.push(`Paper: ${cleanCellText(String(task.paperTitle))}`);
-                            if (task.projectName) items.push(`Project: ${cleanCellText(String(task.projectName))}`);
-                            if (task.patentTitle) items.push(`Patent: ${cleanCellText(String(task.patentTitle))}`);
-                            if (task.bookTitle) items.push(`Book: ${cleanCellText(String(task.bookTitle))}`);
-                            if (task.activityTitle) items.push(`Activity: ${cleanCellText(String(task.activityTitle))}`);
-                        }
-                    });
-
-                    items = items.filter((v, i, a) => v && a.indexOf(v) === i);
-                    rowContents.push(items.length > 0 ? { type: 'text', items } : { type: 'empty' });
-                });
-
-                let maxRowHeight = 40; 
-                rowContents.forEach(content => {
-                    if (content.type === 'text') {
-                        let textHeight = 10;
-                        if (content.items.length > 0) {
-                            content.items.forEach((it, idx) => {
-                                textHeight += doc.heightOfString(`${idx + 1}. ${it}`, { width: dayColWidth - 4, size: 7.5 }) + 3;
-                            });
-                        }
-                        if (textHeight + 10 > maxRowHeight) maxRowHeight = textHeight + 10;
-                    }
-                });
-
-                // Auto-expand row height, do NOT limit to 150. Ensure we trigger page break if it's too big.
-
-                // Page break check
-                if (currentY + maxRowHeight > doc.page.height - 80) {
-                    drawFooter(doc);
-                    doc.addPage();
-                    currentY = 50;
-                    currentY = drawHeader(doc, currentY);
-                }
-
-                const rowColor = (sIdx % 2 === 0) ? '#FFFFFF' : '#EBF5FB'; 
-                doc.fillColor(rowColor).rect(30, currentY, tableActualWidth, maxRowHeight).fill();
-                doc.strokeColor('#1B5E20').lineWidth(0.3).rect(30, currentY, tableActualWidth, maxRowHeight).stroke();
-                
-                doc.strokeColor('#cbd5e1').lineWidth(0.3);
-                doc.moveTo(30 + infoColsWidth, currentY).lineTo(30 + infoColsWidth, currentY + maxRowHeight).stroke();
-                doc.moveTo(30 + infoColsWidth + nameColWidth, currentY).lineTo(30 + infoColsWidth + nameColWidth, currentY + maxRowHeight).stroke();
-                doc.moveTo(30 + infoColsWidth + nameColWidth + desigColWidth, currentY).lineTo(30 + infoColsWidth + nameColWidth + desigColWidth, currentY + maxRowHeight).stroke();
-
-                doc.fillColor('#000000');
-                const nameY = currentY + (maxRowHeight / 2) - 4.5;
-                doc.font('Helvetica').fontSize(8).text(`${sIdx + 1}`, 30, nameY, { width: infoColsWidth, align: 'center' });
-                let staffName = staff.name || 'Staff';
-                if (!staffName.toLowerCase().startsWith('dr.')) staffName = `Dr. ${staffName}`;
-                doc.font('Helvetica-Bold').fontSize(8).text(staffName, 30 + infoColsWidth + 3, nameY, { width: nameColWidth - 6 });
-                doc.font('Helvetica').fontSize(7.5).text(`${staff.designation || 'Staff'}\n(${staff.department || 'CFRD'})`, 30 + infoColsWidth + nameColWidth, nameY - 4, { width: desigColWidth, align: 'center' });
-
-                dateRange.forEach((_, i) => {
-                    const colX = 30 + infoColsWidth + nameColWidth + desigColWidth + (i * dayColWidth);
-                    const content = rowContents[i];
-                    if (content.type === 'text') {
-                        let itemY = currentY + 7;
-                        
-                        // Render Research Items
-                        content.items.forEach((item, idx) => {
-                            const itemHeight = doc.heightOfString(`${idx + 1}. ${item}`, { width: dayColWidth - 4, size: 7.5 });
-                            
-                            doc.font('Helvetica').fontSize(7.5).text(`${idx + 1}. ${item}`, colX + 2, itemY, { width: dayColWidth - 4 });
-                            itemY += itemHeight + 3;
-                        });
-                    } else if (content.type === 'leave') {
-                        doc.fillColor('#fff7ed').rect(colX, currentY, dayColWidth, maxRowHeight).fill();
-                        doc.font('Helvetica-Bold').fontSize(7.5).fillColor('#f97316').text(content.leaveType, colX + 2, currentY + (maxRowHeight/2) - 4, { width: dayColWidth - 4, align: 'center' });
-                        doc.fillColor('#000000');
-                    } else {
-                        doc.font('Helvetica-Oblique').fontSize(7.5).fillColor('#ef4444').text('Not Entered', colX, currentY + (maxRowHeight/2) - 4, { width: dayColWidth, align: 'center' });
-                        doc.fillColor('#000000');
-                    }
-                    doc.strokeColor('#cbd5e1').moveTo(colX, currentY).lineTo(colX, currentY + maxRowHeight).stroke();
-                });
-                currentY += maxRowHeight;
-            });
-        } else {
-            // --- MONTHLY LIST FORMAT (New) ---
-            currentY = 145;
-            
-            staffList.forEach((staff, sIdx) => {
-                // Staff Header Row
-                if (currentY + 60 > doc.page.height - 50) { doc.addPage(); currentY = 50; }
-                
-                doc.fillColor('#fce4ec').rect(30, currentY, pageWidth - 60, 25).fill();
-                doc.strokeColor('#000000').lineWidth(0.5).rect(30, currentY, pageWidth - 60, 25).stroke();
-                
-                let staffName = staff.name || 'Staff';
-                if (!staffName.toLowerCase().startsWith('dr.')) staffName = `Dr. ${staffName}`;
-                doc.fillColor('#000000').font('Helvetica-Bold').fontSize(10)
-                   .text(`${sIdx + 1}. ${staffName} - ${staff.designation || 'Staff'} (${staff.department || 'CFRD'})`, 40, currentY + 7);
-                
-                currentY += 25;
-
-                // Create a sub-table for dates
-                dateRange.forEach((date, dIdx) => {
-                    const dayLog = logs.find(l => {
-                        const lDate = new Date(l.date);
-                        return lDate.getDate() === date.getDate() && lDate.getMonth() === date.getMonth() && lDate.getFullYear() === date.getFullYear() && l.staff.toString() === staff._id.toString();
-                    });
-
-                    const dayTasks = tasks.filter(t => {
-                        const tDate = new Date(t.date);
-                        return tDate.getDate() === date.getDate() && tDate.getMonth() === date.getMonth() && tDate.getFullYear() === date.getFullYear() && t.staff.toString() === staff._id.toString();
-                    });
-
-                    let items = [];
-                    let workloads = [];
-
-                    if (dayLog && dayLog.isLeaveDay) items = ['Leave'];
-                    else {
-                        if (dayLog && dayLog.workDone) {
-                            let cleaned = cleanCellText(dayLog.workDone);
-                            if (cleaned.length > 3) items.push(cleaned);
-                        }
-                        dayTasks.forEach(task => {
-                            const smartSentence = generateSmartSentence(task);
-                            if (smartSentence) {
-                                items.push(smartSentence);
-                            } else {
-                                if (task.paperTitle) items.push(`Paper: ${cleanCellText(String(task.paperTitle))}`);
-                                if (task.projectName) items.push(`Project: ${cleanCellText(String(task.projectName))}`);
-                                if (task.patentTitle) items.push(`Patent: ${cleanCellText(String(task.patentTitle))}`);
-                                if (task.bookTitle) items.push(`Book: ${cleanCellText(String(task.bookTitle))}`);
-                                if (task.activityTitle) items.push(`Activity: ${cleanCellText(String(task.activityTitle))}`);
-                            }
-
-                            for (let i = 1; i <= 5; i++) {
-                                const wVal = task[`additionalWorkload${i}`];
-                                if (wVal && wVal.trim() !== '') {
-                                    workloads.push(cleanCellText(wVal));
-                                }
-                            }
-                        });
-                    }
-
-                    if (items.length === 0 && workloads.length === 0) return; 
-
-                    let contentText = items.map((it, i) => items[0] === 'Leave' ? 'LEAVE' : `${i + 1}. ${it}`).join('\n');
-                    if (workloads.length > 0 && items[0] !== 'Leave') {
-                        contentText += (contentText ? `\n─────────────────────\n` : '') + `Additional Workload:\n` + workloads.map(w => `- ${w}`).join('\n');
-                    }
-                    const contentHeight = Math.max(20, doc.heightOfString(contentText, { width: pageWidth - 160, size: 8 }) + 10);
-
-                    if (currentY + contentHeight > doc.page.height - 50) {
-                        doc.addPage();
-                        currentY = 50;
-                        // Repeat staff name on new page if continuing
-                        doc.fillColor('#fdf2f8').rect(30, currentY, pageWidth - 60, 20).fill();
-                        doc.fillColor('#000000').font('Helvetica-Bold').fontSize(9).text(`${staffName} (continued...)`, 40, currentY + 5);
-                        currentY += 20;
-                    }
-
-                    // Draw entry row
-                    doc.fillColor(dIdx % 2 === 0 ? '#ffffff' : '#f8fafc').rect(30, currentY, pageWidth - 60, contentHeight).fill();
-                    doc.strokeColor('#cbd5e1').lineWidth(0.2).rect(30, currentY, pageWidth - 60, contentHeight).stroke();
-
-                    doc.fillColor('#64748b').font('Helvetica-Bold').fontSize(8).text(formatDate(date), 40, currentY + 6);
-                    
-                    if (items[0] === 'Leave') {
-                        doc.fillColor('#f97316').text('LEAVE', 110, currentY + 6);
-                    } else {
-                        doc.fillColor('#334155').font('Helvetica').fontSize(8).text(contentText, 110, currentY + 6, { width: pageWidth - 160 });
-                    }
-
-                    currentY += contentHeight;
-                });
-                
-                currentY += 15; // Space between staff members
-            });
-        }
-
-        // --- ADD ANALYTICS PAGE ---
-        doc.addPage();
-        currentY = 30;
-
-        doc.fillColor('#ffffff').rect(0, 0, pageWidth, 110).fill();
-
-        // Custom Analytics Header (with logo)
-        if (fs.existsSync(logoPath)) {
-            const logoWidth = 200;
-            const logoX = (pageWidth - logoWidth) / 2;
-            doc.image(logoPath, logoX, currentY, { width: logoWidth });
-            currentY += 80;
-        }
-
-        doc.fillColor('#1B5E20').fontSize(14).font('Helvetica-Bold')
-           .text('Weekly Report - Activity Analytics', 30, currentY, { align: 'center', width: pageWidth - 60 });
-        currentY += 40;
-
-        // Calculate Analytics Data
-        const staffActivityCounts = {};
-        const paperStats = { submitted: 0, accepted: 0, published: 0 };
-        const departmentCounts = {};
-
-        staffList.forEach(staff => {
-            staffActivityCounts[staff._id.toString()] = { name: staff.name, total: 0 };
-            if (staff.department && !departmentCounts[staff.department]) {
-                departmentCounts[staff.department] = 0;
-            }
-        });
-
-        tasks.forEach(task => {
-            const staffId = task.staff ? task.staff.toString() : null;
-            if (staffId && staffActivityCounts[staffId]) {
-                staffActivityCounts[staffId].total++;
-                
-                const staff = staffList.find(s => s._id.toString() === staffId);
-                if (staff && staff.department) {
-                    departmentCounts[staff.department] = (departmentCounts[staff.department] || 0) + 1;
-                }
-
-                if (task.paperTitle) {
-                    const status = (task.paperStatus || '').toLowerCase();
-                    if (status === 'submitted') paperStats.submitted++;
-                    else if (status === 'accepted') paperStats.accepted++;
-                    else if (status === 'published') paperStats.published++;
-                }
-            }
-        });
-
-        // 1. Total Activities per Staff (Horizontal Bar Chart)
-        doc.fillColor('#EBF5FB').rect(30, currentY, pageWidth - 60, 20).fill();
-        doc.fillColor('#1565C0').fontSize(10).font('Helvetica-Bold').text('Total Activities per Staff Member', 40, currentY + 5);
-        currentY += 30;
-
-        const chartX = 180;
-        const maxBarWidth = pageWidth - chartX - 60;
-        let maxAct = 1;
-        Object.values(staffActivityCounts).forEach(s => { if (s.total > maxAct) maxAct = s.total; });
-
-        Object.keys(staffActivityCounts).forEach((staffId, idx) => {
-            const data = staffActivityCounts[staffId];
-            if (data.total === 0) return; // Skip zero activity for chart
-
-            const barWidth = (data.total / maxAct) * maxBarWidth;
-            const rowY = currentY + (idx * 20);
-
-            if (rowY > doc.page.height - 60) {
-                drawFooter(doc);
-                doc.addPage();
-                currentY = 40;
-            }
-
-            doc.fillColor('#475569').fontSize(8).font('Helvetica').text(data.name.substring(0, 30), 40, rowY + 5);
-            doc.fillColor('#2E7D32').rect(chartX, rowY + 2, barWidth, 12).fill();
-            doc.fillColor('#1e293b').fontSize(8).font('Helvetica-Bold').text(data.total, chartX + barWidth + 5, rowY + 5);
-        });
-
-        currentY += (Object.keys(staffActivityCounts).filter(id => staffActivityCounts[id].total > 0).length * 20) + 40;
-
-        // 2. Papers Submitted vs Accepted (Bar Chart)
-        if (currentY > doc.page.height - 150) { 
-            drawFooter(doc);
-            doc.addPage(); 
-            currentY = 40; 
-        }
-        
-        doc.fillColor('#E8F5E9').rect(30, currentY, pageWidth - 60, 20).fill();
-        doc.fillColor('#1B5E20').fontSize(10).font('Helvetica-Bold').text('Papers: Submitted vs Accepted', 40, currentY + 5);
-        currentY += 35;
-
-        const stats = [
-            { label: 'Submitted', value: paperStats.submitted, color: '#1565C0' },
-            { label: 'Accepted', value: paperStats.accepted, color: '#1976D2' },
-            { label: 'Published', value: paperStats.published, color: '#1E88E5' }
-        ];
-
-        stats.forEach((stat, i) => {
-            const barWidth = (stat.value / Math.max(paperStats.submitted + paperStats.accepted + paperStats.published, 1)) * maxBarWidth * 2;
-            const rowY = currentY + (i * 25);
-            doc.fillColor('#475569').fontSize(9).text(stat.label, 40, rowY + 5);
-            doc.fillColor(stat.color).rect(chartX, rowY + 2, Math.max(barWidth, 5), 15).fill();
-            doc.fillColor('#1e293b').text(stat.value, chartX + Math.max(barWidth, 5) + 5, rowY + 5);
-        });
-
-        currentY += 100;
-
-        // 3. Department-wise Activity Count
-        if (currentY > doc.page.height - 150) { 
-            drawFooter(doc);
-            doc.addPage(); 
-            currentY = 40; 
-        }
-
-        doc.fillColor('#EBF5FB').rect(30, currentY, pageWidth - 60, 20).fill();
-        doc.fillColor('#1565C0').fontSize(10).font('Helvetica-Bold').text('Department-wise Distribution', 40, currentY + 5);
-        currentY += 35;
-
-        Object.keys(departmentCounts).forEach((dept, i) => {
-            const count = departmentCounts[dept];
-            const barWidth = (count / Math.max(tasks.length, 1)) * maxBarWidth * 2;
-            const rowY = currentY + (i * 25);
-            doc.fillColor('#475569').fontSize(9).text(dept, 40, rowY + 5);
-            doc.fillColor('#00695C').rect(chartX, rowY + 2, Math.max(barWidth, 5), 15).fill();
-            doc.fillColor('#1e293b').text(count, chartX + Math.max(barWidth, 5) + 5, rowY + 5);
-        });
-
-        // Final Signatures on Analytics Page
-        drawSignatures(doc);
-        drawFooter(doc);
-
-        doc.end();
 
     } catch (error) {
         console.error('PDF Generation Error:', error);
@@ -762,36 +462,16 @@ const generateExcel = async (req, res) => {
                 }
 
                 dayTasks.forEach(task => {
-                    const smartSentence = generateSmartSentence(task);
-                    if (smartSentence) {
-                        items.push(smartSentence);
-                    } else {
-                        if (task.paperTitle) items.push(`Paper: ${task.paperTitle}`);
-                        if (task.projectName) items.push(`Project: ${task.projectName}`);
-                        if (task.patentTitle) items.push(`Patent: ${task.patentTitle}`);
-                        if (task.bookTitle) items.push(`Book: ${task.bookTitle}`);
-                        if (task.activityTitle) items.push(`Activity: ${task.activityTitle}`);
-                        
-                        for (let i = 1; i <= 5; i++) {
-                            if (task[`additionalWorkload${i}`] && task[`additionalWorkload${i}`].trim() !== '') {
-                                items.push(task[`additionalWorkload${i}`].trim());
-                            }
-                        }
-                        
-                        if (task.dynamicAnswers && typeof task.dynamicAnswers === 'object') {
-                            Object.values(task.dynamicAnswers).forEach(val => {
-                                if (val && typeof val === 'string' && val.trim() !== '') {
-                                    items.push(val.trim());
-                                } else if (Array.isArray(val) && val.length > 0) {
-                                    items.push(val.join(', '));
-                                }
-                            });
-                        }
+                    const sentences = getTaskSentences(task);
+                    if (sentences.length > 0) {
+                        items.push(...sentences);
                     }
                 });
 
                 items = items.filter((v, i, a) => v && a.indexOf(v) === i);
                 const workloads = [];
+                // Workloads are already in items via getTaskSentences, 
+                // but if we need them separately for the footer of the cell:
                 dayTasks.forEach(task => {
                     for (let i = 1; i <= 5; i++) {
                         const w = task[`additionalWorkload${i}`];
@@ -1026,4 +706,272 @@ const generateAnalyticsPDF = async (req, res) => {
     }
 };
 
-module.exports = { generatePDF, generateExcel, generateAnalyticsPDF };
+// @desc    Generate a colorful, per-person research summary report
+// @route   GET /api/reports/staff-summary
+// @access  Private (Admin)
+const generateStaffSummaryPDF = async (req, res) => {
+    try {
+        const { dept } = req.query;
+        
+        // Fetch all staff and their tasks
+        const staffQuery = { role: 'staff' };
+        if (dept) staffQuery.department = dept;
+        const staffList = await User.find(staffQuery).sort({ department: 1, name: 1 });
+        
+        const tasks = await TaskEntry.find({}).populate('staff');
+
+        const doc = new PDFDocument({ 
+            layout: 'portrait', 
+            margin: 40,
+            size: 'A4',
+            bufferPages: true 
+        });
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename=CFRD_Staff_Performance_Report_${new Date().getTime()}.pdf`);
+
+        doc.pipe(res);
+
+        const pageWidth = doc.page.width;
+        const logoPath = path.join(__dirname, '..', '..', '..', 'dawnow-frontend', 'public', 'images', 'logo-jjcet.jpg');
+
+        // Color Palette
+        const colors = {
+            primary: '#1a237e',   // Deep Blue
+            secondary: '#1b5e20', // Forest Green
+            accent: '#f57c00',    // Orange
+            paper: '#2196f3',     // Blue
+            project: '#4caf50',   // Green
+            patent: '#ff9800',    // Amber
+            book: '#9c27b0',      // Purple
+            bg: '#f8fafc'         // Light Grey
+        };
+
+        // --- Multi-page logic for Staff ---
+        for (let i = 0; i < staffList.length; i++) {
+            const staff = staffList[i];
+            const staffTasks = tasks.filter(t => t.staff && t.staff._id.toString() === staff._id.toString());
+
+            if (i > 0) doc.addPage();
+
+            let currentY = 30;
+
+            // Page Header with Logo
+            if (fs.existsSync(logoPath)) {
+                doc.image(logoPath, (pageWidth - 200) / 2, currentY, { width: 200 });
+                currentY += 65;
+            }
+
+            // Staff Banner
+            doc.fillColor(colors.primary).rect(40, currentY, pageWidth - 80, 70, 8).fill();
+            doc.fillColor('#ffffff').fontSize(16).font('Helvetica-Bold').text(staff.name || 'Staff Member', 60, currentY + 15);
+            doc.fontSize(10).font('Helvetica').text(`${staff.designation || 'Faculty'} | Department of ${staff.department || 'General'}`, 60, currentY + 35);
+            doc.fontSize(11).font('Helvetica-Bold').text(`Total Research Score: ${staff.totalScore || 0} Points`, 60, currentY + 50);
+            
+            currentY += 85;
+
+            // Stats row (Colorful Cards)
+            const cardWidth = (pageWidth - 110) / 4;
+            const drawMetricCard = (label, value, color, x, y) => {
+                doc.fillColor(color).rect(x, y, cardWidth, 50, 5).fill();
+                doc.fillColor('#ffffff').fontSize(8).font('Helvetica-Bold').text(label.toUpperCase(), x + 5, y + 10, { width: cardWidth - 10, align: 'center' });
+                doc.fontSize(16).text(value.toString(), x + 5, y + 25, { width: cardWidth - 10, align: 'center' });
+            };
+
+            const staffStats = {
+                papers: staffTasks.filter(t => !!t.paperTitle).length,
+                projects: staffTasks.filter(t => !!t.projectName).length,
+                patents: staffTasks.filter(t => !!t.patentTitle).length,
+                activities: staffTasks.filter(t => !!t.activityTitle).length
+            };
+
+            drawMetricCard('Papers', staffStats.papers, colors.paper, 40, currentY);
+            drawMetricCard('Projects', staffStats.projects, colors.project, 40 + cardWidth + 10, currentY);
+            drawMetricCard('Patents', staffStats.patents, colors.patent, 40 + (cardWidth + 10) * 2, currentY);
+            drawMetricCard('Activities', staffStats.activities, colors.book, 40 + (cardWidth + 10) * 3, currentY);
+
+            currentY += 70;
+
+            // --- Individual Activity Timeline ---
+            doc.fillColor(colors.primary).fontSize(12).font('Helvetica-Bold').text('Recent Research Contributions', 40, currentY);
+            doc.strokeColor(colors.primary).lineWidth(1).moveTo(40, currentY + 15).lineTo(150, currentY + 15).stroke();
+            currentY += 25;
+
+            if (staffTasks.length === 0) {
+                doc.fillColor('#94a3b8').fontSize(10).font('Helvetica-Oblique').text('No research activities recorded for this period.', 40, currentY);
+                currentY += 20;
+            } else {
+                staffTasks.sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 10).forEach(task => {
+                    const sentences = getTaskSentences(task);
+                    if (sentences.length > 0) {
+                        // Check for page overflow
+                        if (currentY > doc.page.height - 100) {
+                            doc.addPage();
+                            currentY = 40;
+                        }
+
+                        // Activity Box
+                        const boxHeight = (sentences.length * 14) + 20;
+                        doc.fillColor('#f1f5f9').rect(40, currentY, pageWidth - 80, boxHeight, 3).fill();
+                        
+                        // Date indicator
+                        doc.fillColor(colors.primary).fontSize(8).font('Helvetica-Bold').text(new Date(task.date).toLocaleDateString('en-GB'), 50, currentY + 8);
+                        
+                        doc.fillColor('#334155').fontSize(9).font('Helvetica').text(sentences.join(' '), 50, currentY + 20, { width: pageWidth - 110 });
+                        
+                        // Status Badge
+                        const statusColor = task.status === 'approved' ? '#16a34a' : (task.status === 'rejected' ? '#ef4444' : '#f59e0b');
+                        doc.fillColor(statusColor).rect(pageWidth - 100, currentY + 5, 50, 12, 6).fill();
+                        doc.fillColor('#ffffff').fontSize(7).font('Helvetica-Bold').text(task.status.toUpperCase(), pageWidth - 100, currentY + 8, { width: 50, align: 'center' });
+
+                        currentY += boxHeight + 10;
+                    }
+                });
+            }
+
+            // Footer for page
+            doc.fontSize(8).fillColor('#94a3b8').text(`Faculty Performance Report - ${staff.name} | JJCET`, 40, doc.page.height - 30, { align: 'center' });
+        }
+
+        doc.end();
+    } catch (error) {
+        console.error('Staff Summary PDF Error:', error);
+        res.status(500).json({ message: 'Server error generating Staff Summary PDF' });
+    }
+};
+
+// @desc    Bulk update report corrections
+// @route   POST /api/reports/bulk-update
+// @access  Private (Admin)
+const bulkUpdateReport = async (req, res) => {
+    try {
+        console.log('Bulk update received:', JSON.stringify(req.body).substring(0, 200));
+        const { edits, academicYear = '2025-26' } = req.body;
+        
+        if (!edits || !Array.isArray(edits)) {
+            return res.status(400).json({ message: 'Invalid edits data' });
+        }
+
+        const parseDate = (dateValue) => {
+            if (!dateValue) return new Date();
+            const parsed = new Date(dateValue);
+            if (isNaN(parsed.getTime())) {
+                if (typeof dateValue === 'string' && dateValue.includes('.')) {
+                    const parts = dateValue.split('.');
+                    if (parts.length === 3) {
+                        return new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+                    }
+                }
+                return new Date();
+            }
+            return parsed;
+        };
+
+        const operations = edits.map(edit => {
+            const { staffId, date, content } = edit;
+            const targetDate = parseDate(date);
+            targetDate.setHours(0, 0, 0, 0);
+            
+            return {
+                updateOne: {
+                    filter: { staff: staffId, date: targetDate },
+                    update: { 
+                        $set: { 
+                            summaryCorrection: content, 
+                            status: 'approved',
+                            academicYear,
+                            staff: staffId,
+                            date: targetDate
+                        } 
+                    },
+                    upsert: true
+                }
+            };
+        });
+        
+        if (operations.length > 0) {
+            await TaskEntry.bulkWrite(operations);
+        }
+
+        res.json({ success: true, message: 'Report updated successfully' });
+    } catch (error) {
+        console.error('Bulk update error:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+// @route   GET /api/reports/weekly-matrix
+// @access  Private (Admin)
+const getWeeklyMatrix = async (req, res) => {
+    try {
+        const getWeekRange = () => {
+            const now = new Date();
+            const day = now.getDay();
+            const monday = new Date(now);
+            monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+            monday.setHours(0, 0, 0, 0);
+            const saturday = new Date(monday);
+            saturday.setDate(monday.getDate() + 5);
+            saturday.setHours(23, 59, 59, 999);
+            return { start: monday, end: saturday };
+        };
+
+        const allStaff = await User.find({ role: 'staff' });
+        const { start, end } = getWeekRange();
+        
+        const allReports = await TaskEntry.find({
+            date: { $gte: start, $lte: end }
+        }).populate('staff');
+
+        const matrix = allStaff.map(staff => {
+            const staffReports = allReports.filter(r => 
+                r.staff?._id?.toString() === staff._id.toString() || r.staff?.toString() === staff._id.toString()
+            );
+            return { staff, reports: staffReports };
+        });
+
+        res.json(matrix);
+    } catch (error) {
+        console.error('Weekly Matrix Error:', error);
+        res.status(500).json({ message: 'Server error fetching matrix' });
+    }
+};
+
+const generateStaffMonthlyPDF = async (req, res) => {
+    try {
+        const { staffId, month, year } = req.query;
+        if (!staffId || !month || !year) {
+            return res.status(400).json({ message: 'Missing staffId, month or year' });
+        }
+
+        const staff = await User.findById(staffId).populate('staffProfile');
+        if (!staff) return res.status(404).json({ message: 'Staff not found' });
+
+        const startDate = new Date(year, month - 1, 1);
+        const endDate = new Date(year, month, 0, 23, 59, 59);
+
+        const tasks = await TaskEntry.find({
+            staff: staffId,
+            date: { $gte: startDate, $lte: endDate }
+        }).sort({ date: 1 });
+
+        const generator = new PerPersonReportGenerator(staff, month, year, tasks);
+        const doc = generator.generate();
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename=Report_${staff.name.replace(/\s+/g, '_')}_${month}_${year}.pdf`);
+        doc.pipe(res);
+    } catch (error) {
+        console.error('PDF Generation Error:', error);
+        res.status(500).json({ message: 'Error generating PDF' });
+    }
+};
+
+module.exports = {
+    generatePDF,
+    generateExcel,
+    generateAnalyticsPDF,
+    generateStaffSummaryPDF,
+    bulkUpdateReport,
+    getWeeklyMatrix,
+    generateStaffMonthlyPDF
+};

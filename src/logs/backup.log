@@ -83,3 +83,665 @@
 {"level":"info","message":"Initiating backup sequence: caf4ada7-d0f7-46e9-944b-6fc57a28e6c0 [Trigger: report-submit]","timestamp":"2026-04-06T16:49:21.586Z"}
 {"level":"info","message":"Snapshot caf4ada7-d0f7-46e9-944b-6fc57a28e6c0 completed successfully. Total docs: 41","timestamp":"2026-04-06T16:49:22.452Z"}
 {"level":"info","message":"Email sent: <b59125e7-6fa3-5878-6a31-c9192f62ef24@gmail.com>","timestamp":"2026-04-06T16:49:25.339Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-06T17:15:21.136Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-06T17:15:21.205Z"}
+{"level":"info","message":"Initiating backup sequence: 545f2b2e-8a8f-4276-b749-4f3264f793d6 [Trigger: report-submit]","timestamp":"2026-04-06T17:17:04.995Z"}
+{"level":"info","message":"Snapshot 545f2b2e-8a8f-4276-b749-4f3264f793d6 completed successfully. Total docs: 42","timestamp":"2026-04-06T17:17:06.350Z"}
+{"level":"info","message":"Email sent: <c5e4f2f3-6007-0979-baf8-0055c1cf701d@gmail.com>","timestamp":"2026-04-06T17:17:32.527Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-06T17:56:44.413Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-06T17:56:44.463Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-06T17:59:00.065Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-06T17:59:00.254Z"}
+{"level":"info","message":"Initiating backup sequence: 18970510-5a8e-42bb-be32-de574113e9e9 [Trigger: report-submit]","timestamp":"2026-04-06T18:03:36.561Z"}
+{"level":"info","message":"Snapshot 18970510-5a8e-42bb-be32-de574113e9e9 completed successfully. Total docs: 43","timestamp":"2026-04-06T18:03:37.966Z"}
+{"level":"info","message":"Email sent: <045691c1-5f0d-cd1b-c097-c6ab68f15839@gmail.com>","timestamp":"2026-04-06T18:03:41.269Z"}
+{"level":"info","message":"Initiating backup sequence: 176eb615-ec80-49c8-966f-d278a8f50ae4 [Trigger: report-submit]","timestamp":"2026-04-06T18:03:44.353Z"}
+{"level":"info","message":"Snapshot 176eb615-ec80-49c8-966f-d278a8f50ae4 completed successfully. Total docs: 44","timestamp":"2026-04-06T18:03:45.167Z"}
+{"level":"info","message":"Email sent: <3017076d-52c2-1d6f-4061-4dab350ead8a@gmail.com>","timestamp":"2026-04-06T18:03:50.051Z"}
+{"level":"info","message":"Initiating backup sequence: d4e3cd21-4dbc-4729-87bb-6cb9c229c0fe [Trigger: report-submit]","timestamp":"2026-04-06T18:04:21.056Z"}
+{"level":"info","message":"Snapshot d4e3cd21-4dbc-4729-87bb-6cb9c229c0fe completed successfully. Total docs: 45","timestamp":"2026-04-06T18:04:21.717Z"}
+{"level":"info","message":"Initiating backup sequence: 16fea8e6-9b70-422a-a819-bef02c4656c2 [Trigger: report-submit]","timestamp":"2026-04-06T18:04:26.599Z"}
+{"level":"info","message":"Snapshot 16fea8e6-9b70-422a-a819-bef02c4656c2 completed successfully. Total docs: 46","timestamp":"2026-04-06T18:04:27.404Z"}
+{"level":"info","message":"Email sent: <dfdbf3fd-797e-322b-6419-e4f9c799e7de@gmail.com>","timestamp":"2026-04-06T18:04:46.889Z"}
+{"level":"info","message":"Email sent: <c36e9120-1922-198b-f5bc-3f8063767d42@gmail.com>","timestamp":"2026-04-06T18:04:47.655Z"}
+{"level":"info","message":"Initiating backup sequence: 0c9ae5fa-0e0c-4a7c-b842-9e0c718b4581 [Trigger: report-submit]","timestamp":"2026-04-06T18:14:59.323Z"}
+{"level":"info","message":"Snapshot 0c9ae5fa-0e0c-4a7c-b842-9e0c718b4581 completed successfully. Total docs: 47","timestamp":"2026-04-06T18:15:00.553Z"}
+{"level":"info","message":"Email sent: <be546c24-aee3-8d05-e1a4-ac0a4c2c0386@gmail.com>","timestamp":"2026-04-06T18:15:05.673Z"}
+{"level":"info","message":"Initiating backup sequence: cd95f86a-b73f-4deb-9048-9c5754c20cca [Trigger: report-submit]","timestamp":"2026-04-06T18:20:46.295Z"}
+{"level":"info","message":"Snapshot cd95f86a-b73f-4deb-9048-9c5754c20cca completed successfully. Total docs: 48","timestamp":"2026-04-06T18:20:47.701Z"}
+{"level":"info","message":"Email sent: <c1298167-4750-3702-4f1d-2e9c44607303@gmail.com>","timestamp":"2026-04-06T18:20:52.594Z"}
+{"level":"info","message":"Initiating backup sequence: 80b34f29-3c3e-4afc-b3e8-f5abf855b497 [Trigger: report-submit]","timestamp":"2026-04-06T18:26:25.227Z"}
+{"level":"info","message":"Snapshot 80b34f29-3c3e-4afc-b3e8-f5abf855b497 completed successfully. Total docs: 48","timestamp":"2026-04-06T18:26:28.104Z"}
+{"level":"info","message":"Email sent: <fbacbb13-0949-f015-58c0-6343dcd78935@gmail.com>","timestamp":"2026-04-06T18:26:31.933Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-07T16:49:34.579Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-07T16:49:34.608Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T13:38:15.720Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T13:38:15.788Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T14:11:54.359Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T14:11:54.449Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T14:25:16.487Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T14:25:16.541Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T14:27:44.497Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T14:27:44.536Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T14:55:52.953Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T14:55:53.123Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T15:01:07.468Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T15:01:07.500Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T15:10:12.770Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T15:10:12.798Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T15:10:50.570Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T15:10:50.596Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T15:14:36.750Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T15:14:36.796Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T15:16:18.174Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T15:16:18.206Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T15:18:43.595Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T15:18:43.621Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T15:21:35.955Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T15:21:35.982Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T15:22:15.832Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T15:22:15.860Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T15:22:25.916Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T15:22:25.942Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-09T15:29:21.113Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-09T15:29:21.137Z"}
+{"level":"warn","message":"Main DB disconnected! Attempting emergency backup...","timestamp":"2026-04-09T15:56:38.597Z"}
+{"level":"info","message":"Initiating backup sequence: 1bcd5a6d-3b4e-4a31-81a3-6cb19dc73a6f [Trigger: pre-crash]","timestamp":"2026-04-09T15:56:38.598Z"}
+{"level":"info","message":"Snapshot 1bcd5a6d-3b4e-4a31-81a3-6cb19dc73a6f completed successfully. Total docs: 1","timestamp":"2026-04-09T15:56:42.260Z"}
+{"level":"info","message":"Email sent: <4bab6b84-6bca-8d86-01a1-d36a21bb2d4c@gmail.com>","timestamp":"2026-04-09T15:56:45.468Z"}
+{"level":"info","message":"Email sent: <f5f8a7c1-692a-54a4-5d20-73e643a59674@gmail.com>","timestamp":"2026-04-09T15:56:48.087Z"}
+{"level":"warn","message":"Backup Atlas DB disconnected! Attempting reconnect...","timestamp":"2026-04-09T15:56:48.087Z"}
+{"level":"info","message":"Health check: crashed | DB: false | Backup: false","timestamp":"2026-04-09T15:56:48.150Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T08:28:50.904Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T08:28:50.950Z"}
+{"level":"info","message":"Initiating backup sequence: a145af5e-c46d-4660-9bc7-abfacb12bf83 [Trigger: report-submit]","timestamp":"2026-04-10T08:33:46.946Z"}
+{"level":"info","message":"Snapshot a145af5e-c46d-4660-9bc7-abfacb12bf83 completed successfully. Total docs: 3","timestamp":"2026-04-10T08:33:48.209Z"}
+{"level":"info","message":"Email sent: <a7b91765-8d23-a306-5e4b-e09cf588d4da@gmail.com>","timestamp":"2026-04-10T08:33:51.750Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:19:29.340Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:19:29.370Z"}
+{"level":"warn","message":"Main DB disconnected! Attempting emergency backup...","timestamp":"2026-04-10T09:20:29.347Z"}
+{"level":"info","message":"Initiating backup sequence: f5d225ff-4817-4084-ae25-b8394442aba8 [Trigger: pre-crash]","timestamp":"2026-04-10T09:20:29.350Z"}
+{"level":"error","message":"Critical: Failed to create snapshot log - Operation `backup_snapshots.insertOne()` buffering timed out after 10000ms","timestamp":"2026-04-10T09:20:39.382Z"}
+{"level":"error","message":"Error sending email: getaddrinfo ENOTFOUND smtp.gmail.com","timestamp":"2026-04-10T09:20:39.430Z"}
+{"level":"warn","message":"Backup Atlas DB disconnected! Attempting reconnect...","timestamp":"2026-04-10T09:20:39.431Z"}
+{"level":"info","message":"Health check: crashed | DB: false | Backup: false","timestamp":"2026-04-10T09:20:39.431Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:25:19.865Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:25:19.888Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:31:49.743Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:31:49.766Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:33:14.473Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:33:14.496Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:36:38.870Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:36:38.895Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:37:34.594Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:37:34.616Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:38:18.366Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:38:18.408Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:45:59.323Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:45:59.346Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:47:58.679Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:47:58.719Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:54:08.573Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:54:08.594Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:56:34.556Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:56:34.585Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:56:52.110Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:56:52.133Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:58:34.399Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:58:34.423Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T09:59:28.241Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T09:59:28.271Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:11:27.218Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:11:27.238Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:12:09.801Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:12:09.823Z"}
+{"level":"info","message":"Initiating backup sequence: 13fba124-4d5c-4a43-a26e-89055b4677ef [Trigger: report-submit]","timestamp":"2026-04-10T10:17:21.658Z"}
+{"level":"info","message":"Snapshot 13fba124-4d5c-4a43-a26e-89055b4677ef completed successfully. Total docs: 5","timestamp":"2026-04-10T10:17:22.495Z"}
+{"level":"info","message":"Email sent: <9fa973d3-b625-88cf-3595-243d022cc0a0@gmail.com>","timestamp":"2026-04-10T10:17:25.712Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:42:04.862Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:42:04.963Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:42:36.062Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:42:36.105Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:43:39.099Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:43:39.139Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:50:32.522Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:50:32.573Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:50:47.811Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:50:47.847Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:51:12.669Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:51:12.708Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:51:24.859Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:51:24.926Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:51:36.002Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:51:36.041Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:55:29.903Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:55:29.954Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:56:14.619Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:56:14.667Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:56:40.212Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:56:40.253Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T10:57:29.135Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T10:57:29.178Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T11:00:06.793Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T11:00:06.845Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T11:02:14.998Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T11:02:15.031Z"}
+{"level":"info","message":"Initiating backup sequence: a773c1a5-433a-4d8f-bf70-5689e026da3c [Trigger: report-submit]","timestamp":"2026-04-10T11:05:59.502Z"}
+{"level":"info","message":"Snapshot a773c1a5-433a-4d8f-bf70-5689e026da3c completed successfully. Total docs: 7","timestamp":"2026-04-10T11:06:00.398Z"}
+{"level":"info","message":"Email sent: <c15cb426-8893-4234-6619-7296c98c64de@gmail.com>","timestamp":"2026-04-10T11:06:03.937Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:01:42.266Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:01:42.419Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:10:14.414Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:10:14.510Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:10:32.477Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:10:32.569Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:13:33.922Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:13:34.002Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:13:41.101Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:13:41.188Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:20:12.239Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:20:12.327Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:20:21.006Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:20:21.102Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:22:50.700Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:22:50.787Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:22:57.339Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:22:57.425Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:23:31.802Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:23:31.881Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:23:46.579Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:23:46.672Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:23:57.143Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:23:57.240Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:27:09.781Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:27:09.868Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:27:28.117Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:27:28.198Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:27:41.134Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:27:41.223Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:29:00.104Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:29:00.197Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:29:06.374Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:29:06.467Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:29:21.954Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:29:22.043Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:29:42.892Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:29:42.974Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:29:48.149Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:29:48.231Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:30:09.496Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:30:09.596Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:30:17.301Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:30:17.384Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:32:46.826Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:32:46.915Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:32:59.367Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:32:59.451Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:33:06.852Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:33:06.948Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:33:19.494Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:33:19.580Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:35:21.585Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:35:21.687Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:35:37.713Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:35:37.790Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:35:51.784Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:35:51.868Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:36:16.195Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:36:16.270Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:36:24.205Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:36:24.291Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:36:45.979Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:36:46.067Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:38:08.217Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:38:08.309Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:39:55.948Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:39:56.033Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:40:01.310Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:40:01.413Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:40:23.945Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:40:24.030Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:40:38.303Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:40:38.401Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:42:34.661Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:42:34.772Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:42:37.975Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:42:38.054Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:45:51.834Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:45:51.924Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:46:02.762Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:46:02.853Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:46:13.388Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:46:13.469Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:46:32.785Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:46:32.865Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:48:30.495Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:48:30.591Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:48:33.629Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:48:33.709Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:48:42.212Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:48:42.314Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:49:12.652Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:49:12.695Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:49:14.305Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:49:14.345Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:49:26.237Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:49:26.271Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:51:59.444Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:51:59.508Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:52:27.636Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:52:27.684Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:52:44.719Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:52:44.764Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:53:08.280Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:53:08.328Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:56:31.560Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:56:31.610Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:56:45.064Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:56:45.111Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:56:51.539Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:56:51.577Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:57:15.260Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:57:15.297Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:59:22.212Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:59:22.261Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T15:59:53.737Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T15:59:53.780Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:00:00.151Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:00:00.209Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:10:57.932Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:10:58.032Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:11:06.903Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:11:07.021Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:11:14.757Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:11:14.839Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:11:24.545Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:11:24.644Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:11:36.038Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:11:36.122Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:11:53.395Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:11:53.476Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:12:00.287Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:12:00.372Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:12:12.696Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:12:12.791Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:14:50.901Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:14:50.991Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:14:59.044Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:14:59.126Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:15:03.223Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:15:03.312Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:15:18.142Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:15:18.243Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:17:41.238Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:17:41.319Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:17:54.555Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:17:54.633Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:18:18.435Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:18:18.514Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:20:48.181Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:20:48.262Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:21:00.885Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:21:00.976Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:21:12.780Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:21:12.861Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:21:17.057Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:21:17.159Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:21:36.542Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:21:36.627Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:21:55.416Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:21:55.508Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:26:43.390Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:26:43.469Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:36:01.168Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:36:01.265Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:36:15.621Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:36:15.716Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:36:34.732Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:36:34.824Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:37:37.338Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:37:37.414Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:37:45.008Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:37:45.102Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:37:58.943Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:37:59.033Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:41:08.434Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:41:08.534Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:41:20.475Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:41:20.564Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:41:46.376Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:41:46.458Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:41:50.916Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:41:51.010Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:42:03.390Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:42:03.489Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:42:07.404Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:42:07.490Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:56:00.466Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:56:00.501Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:56:04.113Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:56:04.164Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:56:13.368Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:56:13.414Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:56:15.505Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:56:15.542Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:56:24.232Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:56:24.267Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:56:26.334Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:56:26.368Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:56:53.261Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:56:53.303Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:56:57.377Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:56:57.411Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:58:48.657Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:58:48.692Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:58:54.390Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:58:54.425Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:59:16.382Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:59:16.431Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:59:45.253Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:59:45.286Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:59:55.954Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:59:55.992Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T16:59:58.642Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T16:59:58.676Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:01:11.352Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:01:11.392Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:01:36.636Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:01:36.676Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:01:53.732Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:01:53.772Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:26:35.291Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:26:35.345Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:29:37.726Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:29:37.791Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:32:02.124Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:32:02.187Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:32:59.884Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:32:59.944Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:33:22.424Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:33:22.487Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:33:30.597Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:33:30.656Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:33:35.656Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:33:35.718Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:35:45.417Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:35:45.482Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:35:55.080Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:35:55.139Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:36:05.702Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:36:05.769Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:37:36.049Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:37:36.124Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:37:51.179Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:37:51.237Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:37:59.405Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:37:59.468Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:38:15.034Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:38:15.095Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:38:25.238Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:38:25.299Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:39:48.699Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:39:48.759Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:40:16.962Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:40:17.021Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:40:26.533Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:40:26.603Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-10T17:40:32.237Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-10T17:40:32.281Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T04:00:37.022Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T04:00:37.087Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T04:32:07.024Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T04:32:07.089Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T04:34:36.320Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T04:34:36.387Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T04:34:48.313Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T04:34:48.368Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T04:35:18.908Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T04:35:19.005Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T04:38:20.968Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T04:38:21.046Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T04:39:42.142Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T04:39:42.185Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T04:39:56.617Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T04:39:56.666Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T04:42:18.763Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T04:42:18.832Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T04:42:48.643Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T04:42:48.688Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T04:45:30.421Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T04:45:30.421Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T04:45:30.467Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T04:45:30.471Z"}
+{"level":"warn","message":"Main DB disconnected! Attempting emergency backup...","timestamp":"2026-04-11T07:10:51.613Z"}
+{"level":"info","message":"Initiating backup sequence: 597930d2-ab24-4df8-9bdb-04505155b6c2 [Trigger: pre-crash]","timestamp":"2026-04-11T07:10:51.614Z"}
+{"level":"info","message":"Snapshot 597930d2-ab24-4df8-9bdb-04505155b6c2 completed successfully. Total docs: 8","timestamp":"2026-04-11T07:10:57.300Z"}
+{"level":"info","message":"Email sent: <ee154836-ad7e-3f95-75cf-d34405c9c046@gmail.com>","timestamp":"2026-04-11T07:11:01.589Z"}
+{"level":"info","message":"Email sent: <1b465d94-cbc5-4394-ef86-965814b4b167@gmail.com>","timestamp":"2026-04-11T07:11:04.713Z"}
+{"level":"warn","message":"Backup Atlas DB disconnected! Attempting reconnect...","timestamp":"2026-04-11T07:11:04.715Z"}
+{"level":"info","message":"Health check: crashed | DB: false | Backup: false","timestamp":"2026-04-11T07:11:04.789Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T07:29:17.571Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T07:29:17.598Z"}
+{"level":"info","message":"Initiating backup sequence: 693a42b8-a43c-4bbd-b9ef-1b83d061faf2 [Trigger: report-submit]","timestamp":"2026-04-11T07:32:23.361Z"}
+{"level":"info","message":"Snapshot 693a42b8-a43c-4bbd-b9ef-1b83d061faf2 completed successfully. Total docs: 9","timestamp":"2026-04-11T07:32:24.259Z"}
+{"level":"info","message":"Email sent: <a0e8f85a-231d-004d-4257-62b40a12669f@gmail.com>","timestamp":"2026-04-11T07:32:27.841Z"}
+{"level":"warn","message":"Main DB disconnected! Attempting emergency backup...","timestamp":"2026-04-11T07:49:53.595Z"}
+{"level":"info","message":"Initiating backup sequence: 1428c5ca-59d5-4c46-8463-b854a44bc332 [Trigger: pre-crash]","timestamp":"2026-04-11T07:49:53.596Z"}
+{"level":"error","message":"Critical: Failed to create snapshot log - getaddrinfo ENOTFOUND ac-ycxk9sn-shard-00-02.7m1pmkd.mongodb.net","timestamp":"2026-04-11T07:50:23.615Z"}
+{"level":"error","message":"Error sending email: connect EHOSTUNREACH 2404:6800:4000:1025::6d:465","timestamp":"2026-04-11T07:50:23.628Z"}
+{"level":"warn","message":"Backup Atlas DB disconnected! Attempting reconnect...","timestamp":"2026-04-11T07:50:23.629Z"}
+{"level":"info","message":"Health check: crashed | DB: false | Backup: false","timestamp":"2026-04-11T07:50:23.629Z"}
+{"level":"warn","message":"Main DB disconnected! Attempting emergency backup...","timestamp":"2026-04-11T07:50:53.596Z"}
+{"level":"info","message":"Initiating backup sequence: 9beb9ebb-4bdc-4ef1-8d88-f5fcac8df01e [Trigger: pre-crash]","timestamp":"2026-04-11T07:50:53.597Z"}
+{"level":"info","message":"Snapshot 9beb9ebb-4bdc-4ef1-8d88-f5fcac8df01e completed successfully. Total docs: 9","timestamp":"2026-04-11T07:51:09.310Z"}
+{"level":"info","message":"Email sent: <6c0da9b7-5cf2-f1a0-3cb0-ac177f319e4d@gmail.com>","timestamp":"2026-04-11T07:51:12.212Z"}
+{"level":"info","message":"Email sent: <b042e870-a7b3-d8e6-c977-b0c8e8201edd@gmail.com>","timestamp":"2026-04-11T07:51:15.219Z"}
+{"level":"warn","message":"Backup Atlas DB disconnected! Attempting reconnect...","timestamp":"2026-04-11T07:51:15.220Z"}
+{"level":"info","message":"Health check: crashed | DB: false | Backup: false","timestamp":"2026-04-11T07:51:15.296Z"}
+{"level":"warn","message":"Main DB disconnected! Attempting emergency backup...","timestamp":"2026-04-11T08:06:10.504Z"}
+{"level":"info","message":"Initiating backup sequence: 0c470037-330c-453d-b5c4-c4d6478d7a82 [Trigger: pre-crash]","timestamp":"2026-04-11T08:06:10.504Z"}
+{"level":"info","message":"Snapshot 0c470037-330c-453d-b5c4-c4d6478d7a82 completed successfully. Total docs: 9","timestamp":"2026-04-11T08:06:13.846Z"}
+{"level":"info","message":"Email sent: <cdb69130-ec61-41f6-0687-6f97de02cad5@gmail.com>","timestamp":"2026-04-11T08:06:16.722Z"}
+{"level":"info","message":"Email sent: <37362f3a-ec1e-cbc5-d99a-c1d16a478812@gmail.com>","timestamp":"2026-04-11T08:06:19.562Z"}
+{"level":"warn","message":"Backup Atlas DB disconnected! Attempting reconnect...","timestamp":"2026-04-11T08:06:19.562Z"}
+{"level":"info","message":"Health check: crashed | DB: false | Backup: false","timestamp":"2026-04-11T08:06:19.676Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T08:07:48.897Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T08:07:48.934Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T08:16:31.692Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T08:16:31.730Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T08:16:44.637Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T08:16:44.673Z"}
+{"level":"info","message":"Initiating backup sequence: 9d1fe13b-dc27-465c-9d26-a8cf33a07c0b [Trigger: report-submit]","timestamp":"2026-04-11T08:24:45.074Z"}
+{"level":"info","message":"Snapshot 9d1fe13b-dc27-465c-9d26-a8cf33a07c0b completed successfully. Total docs: 10","timestamp":"2026-04-11T08:24:45.936Z"}
+{"level":"info","message":"Email sent: <02dfeeb9-74c2-1626-2e01-cefb1e252636@gmail.com>","timestamp":"2026-04-11T08:24:49.216Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T08:43:55.883Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T08:43:55.931Z"}
+{"level":"info","message":"Initiating backup sequence: b3a22084-e075-42a7-afda-f10110bfc53d [Trigger: report-submit]","timestamp":"2026-04-11T08:46:33.982Z"}
+{"level":"info","message":"Snapshot b3a22084-e075-42a7-afda-f10110bfc53d completed successfully. Total docs: 11","timestamp":"2026-04-11T08:46:34.894Z"}
+{"level":"info","message":"Email sent: <d47ef565-26eb-b529-455a-0c86fa8bab6d@gmail.com>","timestamp":"2026-04-11T08:46:38.262Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T08:48:45.600Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T08:48:45.641Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T08:49:13.147Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T08:49:13.197Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:14:40.108Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:14:40.135Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:16:26.790Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:16:26.815Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:21:14.174Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:21:14.243Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:21:51.380Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:21:51.404Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:22:18.685Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:22:18.714Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:25:12.847Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:25:12.883Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:25:25.729Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:25:25.775Z"}
+{"level":"info","message":"Initiating backup sequence: 7ee37e7a-090d-4037-907b-d7eae7c3cbcb [Trigger: report-submit]","timestamp":"2026-04-11T10:30:40.614Z"}
+{"level":"info","message":"Snapshot 7ee37e7a-090d-4037-907b-d7eae7c3cbcb completed successfully. Total docs: 7","timestamp":"2026-04-11T10:30:41.568Z"}
+{"level":"info","message":"Email sent: <0c0b1d67-03e2-2fc6-da66-bc3b6911acd3@gmail.com>","timestamp":"2026-04-11T10:30:45.639Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:34:54.857Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:34:54.895Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:35:11.632Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:35:11.689Z"}
+{"level":"info","message":"Initiating backup sequence: 7ee35ea0-2834-485a-b72d-d6df6f822754 [Trigger: report-submit]","timestamp":"2026-04-11T10:36:47.869Z"}
+{"level":"info","message":"Snapshot 7ee35ea0-2834-485a-b72d-d6df6f822754 completed successfully. Total docs: 8","timestamp":"2026-04-11T10:36:48.934Z"}
+{"level":"info","message":"Email sent: <75fe29ba-c744-94de-0a57-d9c3c110f09c@gmail.com>","timestamp":"2026-04-11T10:36:52.456Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:41:52.601Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:41:52.644Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:42:55.929Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:42:55.963Z"}
+{"level":"warn","message":"Main DB disconnected! Attempting emergency backup...","timestamp":"2026-04-11T10:50:07.503Z"}
+{"level":"info","message":"Initiating backup sequence: 38eab95b-687a-4b20-b059-5e8f7197e1dd [Trigger: pre-crash]","timestamp":"2026-04-11T10:50:07.514Z"}
+{"level":"error","message":"Critical: Failed to create snapshot log - getaddrinfo ENOTFOUND ac-ycxk9sn-shard-00-02.7m1pmkd.mongodb.net","timestamp":"2026-04-11T10:50:37.567Z"}
+{"level":"error","message":"Error sending email: getaddrinfo ENOTFOUND smtp.gmail.com","timestamp":"2026-04-11T10:50:37.756Z"}
+{"level":"warn","message":"Backup Atlas DB disconnected! Attempting reconnect...","timestamp":"2026-04-11T10:50:37.761Z"}
+{"level":"info","message":"Health check: crashed | DB: false | Backup: false","timestamp":"2026-04-11T10:50:37.771Z"}
+{"level":"warn","message":"Main DB disconnected! Attempting emergency backup...","timestamp":"2026-04-11T10:51:07.509Z"}
+{"level":"info","message":"Initiating backup sequence: 4e0096b4-2d85-4e52-9d09-904076b87866 [Trigger: pre-crash]","timestamp":"2026-04-11T10:51:07.510Z"}
+{"level":"error","message":"Critical: Failed to create snapshot log - getaddrinfo ENOTFOUND ac-ycxk9sn-shard-00-02.7m1pmkd.mongodb.net","timestamp":"2026-04-11T10:51:37.518Z"}
+{"level":"error","message":"Error sending email: getaddrinfo ENOTFOUND smtp.gmail.com","timestamp":"2026-04-11T10:51:37.536Z"}
+{"level":"warn","message":"Backup Atlas DB disconnected! Attempting reconnect...","timestamp":"2026-04-11T10:51:37.536Z"}
+{"level":"info","message":"Health check: crashed | DB: false | Backup: false","timestamp":"2026-04-11T10:51:37.537Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:55:48.099Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:55:48.144Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:59:22.612Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:59:22.651Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T10:59:39.970Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T10:59:40.006Z"}
+{"level":"info","message":"Initiating backup sequence: 3f91f223-ea9c-4ee7-8143-f2fde87d7ecb [Trigger: report-submit]","timestamp":"2026-04-11T11:01:05.781Z"}
+{"level":"info","message":"Snapshot 3f91f223-ea9c-4ee7-8143-f2fde87d7ecb completed successfully. Total docs: 7","timestamp":"2026-04-11T11:01:07.244Z"}
+{"level":"info","message":"Email sent: <b8936e3a-f306-ed19-1f82-993956e19559@gmail.com>","timestamp":"2026-04-11T11:01:10.556Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T11:09:32.361Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T11:09:32.412Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T11:18:27.033Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T11:18:27.071Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T11:18:39.917Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T11:18:39.964Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T11:29:10.908Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T11:29:10.957Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T11:29:19.059Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T11:29:19.094Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T11:31:34.194Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T11:31:34.233Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T11:32:36.239Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T11:32:36.272Z"}
+{"level":"warn","message":"Main DB disconnected! Attempting emergency backup...","timestamp":"2026-04-11T13:03:18.506Z"}
+{"level":"info","message":"Initiating backup sequence: 9d91f139-ea16-4d01-9770-90ce4e35b04b [Trigger: pre-crash]","timestamp":"2026-04-11T13:03:18.509Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:04:17.613Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:04:17.656Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:04:37.222Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:04:37.264Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:05:05.162Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:05:05.199Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:07:15.368Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:07:15.411Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:08:09.011Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:08:09.056Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:09:29.060Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:09:29.095Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:13:23.110Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:13:23.142Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:14:43.867Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:14:43.904Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:15:42.954Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:15:43.000Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:16:06.614Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:16:06.674Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:16:15.381Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:16:15.435Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:16:25.952Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:16:25.998Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:17:12.718Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:17:12.759Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:17:23.002Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:17:23.036Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:17:32.684Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:17:32.724Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:22:25.494Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:22:25.565Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T13:25:42.252Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T13:25:42.297Z"}
+{"level":"info","message":"Initiating backup sequence: c56d47d8-e5ca-46d2-bfbc-25f5811be07d [Trigger: report-submit]","timestamp":"2026-04-11T13:50:26.697Z"}
+{"level":"info","message":"Snapshot c56d47d8-e5ca-46d2-bfbc-25f5811be07d completed successfully. Total docs: 10","timestamp":"2026-04-11T13:50:29.097Z"}
+{"level":"info","message":"Email sent: <429ead8a-1f30-28ab-bf7a-bad84a763f35@gmail.com>","timestamp":"2026-04-11T13:50:33.404Z"}
+{"level":"info","message":"Initiating backup sequence: 697e7e24-716a-431f-aaf1-330fe0bd7a29 [Trigger: report-submit]","timestamp":"2026-04-11T13:53:07.095Z"}
+{"level":"info","message":"Snapshot 697e7e24-716a-431f-aaf1-330fe0bd7a29 completed successfully. Total docs: 11","timestamp":"2026-04-11T13:53:08.217Z"}
+{"level":"info","message":"Email sent: <b78eef93-3f4b-d8dd-b0f3-6aba30e14908@gmail.com>","timestamp":"2026-04-11T13:53:11.093Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T14:07:40.036Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T14:07:40.087Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T14:07:56.115Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T14:07:56.137Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T14:18:34.770Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T14:18:34.846Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T14:18:43.721Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T14:18:43.755Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T14:18:51.982Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T14:18:52.006Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T14:18:59.563Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T14:18:59.589Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T14:19:09.707Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T14:19:09.730Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T15:23:39.832Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T15:23:39.858Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T15:23:50.209Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T15:23:50.235Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T15:26:39.169Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T15:26:39.199Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T15:27:03.470Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T15:27:03.499Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T15:31:16.353Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T15:31:16.382Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:11:53.329Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:11:53.356Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:11:59.509Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:11:59.529Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:12:40.636Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:12:40.658Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:17:25.272Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:17:25.303Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:23:42.114Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:23:42.152Z"}
+{"level":"warn","message":"Main DB disconnected! Attempting emergency backup...","timestamp":"2026-04-11T16:24:25.381Z"}
+{"level":"info","message":"Initiating backup sequence: 39e645a9-ca46-44eb-ad68-83d719cb5914 [Trigger: pre-crash]","timestamp":"2026-04-11T16:24:25.385Z"}
+{"level":"info","message":"Snapshot 39e645a9-ca46-44eb-ad68-83d719cb5914 completed successfully. Total docs: 11","timestamp":"2026-04-11T16:24:33.885Z"}
+{"level":"info","message":"Email sent: <1b89c691-bd06-99da-dbc1-bddd79cc25bb@gmail.com>","timestamp":"2026-04-11T16:24:39.872Z"}
+{"level":"info","message":"Email sent: <fc866153-131d-e41e-2cfb-ed5f3eb0eed1@gmail.com>","timestamp":"2026-04-11T16:24:51.555Z"}
+{"level":"warn","message":"Backup Atlas DB disconnected! Attempting reconnect...","timestamp":"2026-04-11T16:24:51.559Z"}
+{"level":"info","message":"Health check: crashed | DB: false | Backup: false","timestamp":"2026-04-11T16:24:52.100Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:25:04.309Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:25:04.332Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:27:59.836Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:27:59.858Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:33:21.241Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:33:21.277Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:33:44.369Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:33:44.435Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:34:01.955Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:34:01.988Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:34:27.066Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:34:27.132Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:35:33.167Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:35:33.197Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T16:42:14.599Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T16:42:14.646Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T17:32:32.413Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T17:32:32.457Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T17:49:57.550Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T17:49:57.586Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T17:50:11.726Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T17:50:11.779Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T17:52:20.496Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T17:52:20.539Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T17:54:28.835Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T17:54:28.868Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T17:54:40.909Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T17:54:40.963Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T17:55:59.875Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T17:55:59.951Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T18:53:19.699Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T18:53:19.726Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T19:00:09.806Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T19:00:09.859Z"}
+{"level":"info","message":"System health monitor (Crash Detector) started.","timestamp":"2026-04-11T19:06:53.759Z"}
+{"level":"info","message":"Monthly backup scheduler initialized.","timestamp":"2026-04-11T19:06:53.787Z"}

@@ -6,8 +6,14 @@ const logger = require('./logger');
 const { sendBackupSuccessEmail, sendBackupFailureEmail } = require('./emailNotifier');
 
 // Connections
-const mainDb = mongoose.createConnection(process.env.MONGODB_URI);
-const backupDb = mongoose.createConnection(process.env.MONGODB_BACKUP_URI);
+const dbOptions = {
+    family: 4,
+    serverSelectionTimeoutMS: 10000,
+    heartbeatFrequencyMS: 10000,
+};
+
+const mainDb = mongoose.createConnection(process.env.MONGODB_URI, dbOptions);
+const backupDb = mongoose.createConnection(process.env.MONGODB_BACKUP_URI, dbOptions);
 
 // Backup System Schemas
 const BackupSnapshotSchema = require('../models/backup/BackupSnapshot');

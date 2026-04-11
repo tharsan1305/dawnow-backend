@@ -24,6 +24,10 @@ const getOverview = async (req, res) => {
             bookChaptersPublished: 0,
             fundingApplied: 0,
             fundingReceived: 0,
+            totalActivities: 0,
+            totalBooks: 0,
+            totalConference: 0,
+            additionalWorkloads: 0,
             // Backwards compatibility
             totalPapers: 0,
             totalSCI: 0,
@@ -45,12 +49,25 @@ const getOverview = async (req, res) => {
                     stats.totalSCI++;
                     if (paperStatus === 'published') stats.sciPapersPublished++;
                     else if (paperStatus === 'accepted') stats.sciPapersAccepted++;
+                    // Note: We count scientific status for the specific indicators, 
+                    // but the total SCI count now includes Revision/Submitted too.
                 } else if (journalType.includes('SCOPUS')) {
                     if (paperStatus === 'published') stats.scopusPapersPublished++;
                     else if (paperStatus === 'accepted') stats.scopusPapersAccepted++;
                 } else if (journalType.includes('CONFERENCE')) {
+                    stats.totalConference++;
                     if (paperStatus === 'published') stats.conferencePapersPublished++;
                     else if (paperStatus === 'accepted') stats.conferencePapersAccepted++;
+                }
+            }
+
+            if (task.activityTitle && task.activityTitle.trim() !== '') {
+                stats.totalActivities++;
+            }
+
+            for (let i = 1; i <= 5; i++) {
+                if (task[`additionalWorkload${i}`] && task[`additionalWorkload${i}`].trim() !== '') {
+                    stats.additionalWorkloads++;
                 }
             }
 
