@@ -24,7 +24,6 @@ const {
     getTopStaff,
     getWeeklyMatrix,
     bulkUpdateMatrix,
-    getPendingVerification,
     deleteAdminTask,
     getAllUsers,
     createUser,
@@ -75,17 +74,6 @@ router.delete('/reports/:id', deleteAdminTask);
 // Weekly Matrix
 router.get('/weekly-matrix', getWeeklyMatrix);
 router.post('/weekly-matrix/bulk-update', bulkUpdateMatrix);
-
-// Verification
-router.get('/verification/pending', getPendingVerification);
-router.put('/verification/:id/approve', (req, res) => {
-    req.body.status = 'approved';
-    updateTaskStatus(req, res);
-});
-router.put('/verification/:id/reject', (req, res) => {
-    req.body.status = 'rejected';
-    updateTaskStatus(req, res);
-});
 
 // User management (Security)
 router.get('/users', getAllUsers);
