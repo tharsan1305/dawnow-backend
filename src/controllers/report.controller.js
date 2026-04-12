@@ -711,11 +711,13 @@ const generateAnalyticsPDF = async (req, res) => {
 // @access  Private (Admin)
 const generateStaffSummaryPDF = async (req, res) => {
     try {
-        const { dept } = req.query;
+        const { dept, staffId } = req.query;
         
-        // Fetch all staff and their tasks
+        // Fetch staff and their tasks
         const staffQuery = { role: 'staff' };
-        if (dept) staffQuery.department = dept;
+        if (staffId) staffQuery._id = staffId;
+        else if (dept) staffQuery.department = dept;
+        
         const staffList = await User.find(staffQuery).sort({ department: 1, name: 1 });
         
         const tasks = await TaskEntry.find({}).populate('staff');

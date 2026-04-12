@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const { 
+    getStaffPerformance, 
+    getDepartmentPerformance, 
+    getChartsData 
+} = require('../controllers/analytics.controller');
 const { protect, isAdmin } = require('../middleware/auth');
-const { getOverview, getByDepartment, getMonthlyTrend, getTopPerformers, getWeeklyAnalytics, getMonthlyAnalytics } = require('../controllers/analytics.controller');
 
+// Middleware to ensure admin only
 router.use(protect);
 router.use(isAdmin);
 
-router.get('/overview', getOverview);
-router.get('/weekly', getWeeklyAnalytics);
-router.get('/monthly', getMonthlyAnalytics);
-router.get('/by-department', getByDepartment);
-router.get('/monthly-trend', getMonthlyTrend);
-router.get('/top-performers', getTopPerformers);
+router.get('/staff-performance', getStaffPerformance);
+router.get('/department-performance', getDepartmentPerformance);
+router.get('/charts', getChartsData);
 
 module.exports = router;

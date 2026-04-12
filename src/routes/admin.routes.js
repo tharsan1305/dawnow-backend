@@ -46,9 +46,7 @@ router.get('/dashboard/analytics/weekly-trend', getWeeklyTrend);
 router.get('/dashboard/analytics/activity-types', getActivityTypes);
 router.get('/dashboard/analytics/department-comparison', getDeptComparison);
 router.get('/dashboard/analytics/top-staff', getTopStaff);
-router.get('/dashboard/analytics/overview', analyticsController.getOverview);
-router.get('/dashboard/analytics/weekly', analyticsController.getWeeklyAnalytics);
-router.get('/dashboard/analytics/monthly', analyticsController.getMonthlyAnalytics);
+// Removed outdated/broken analytics routes
 router.get('/dashboard/recent-reports', (req, res) => {
     // Already part of getDashboard, but let's provide a specific one if needed
     getDashboard(req, res);

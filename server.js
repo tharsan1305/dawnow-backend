@@ -28,6 +28,8 @@ const projectRoutes = require('./src/routes/project.routes');
 const leaveRoutes = require('./src/routes/leave.routes');
 const settingsRoutes = require('./src/routes/settings.routes');
 const announcementsRoutes = require('./src/routes/notice.routes'); // Alias
+const messageRoutes = require('./src/routes/message.routes');
+const certificateRoutes = require('./src/routes/certificate.routes');
 
 // Initialize express
 const app = express();
@@ -100,6 +102,8 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/leave', leaveRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/announcements', announcementsRoutes);
+app.use('/api/certificates', certificateRoutes);
+app.use('/api/messages', messageRoutes);
 
 // Backup & Recovery System
 require('./src/backup/crashDetector').startCrashDetector();
