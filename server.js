@@ -16,7 +16,12 @@ const adminRoutes = require('./src/routes/admin.routes');
 const questionRoutes = require('./src/routes/question.routes');
 const reportRoutes = require('./src/routes/report.routes');
 
-// New V2.0 Routes
+// Health check route
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', message: 'CFRD Backend Running' });
+});
+
+// V1.0 API Routes
 const dailylogRoutes = require('./src/routes/dailylog.routes');
 const goalRoutes = require('./src/routes/goal.routes');
 const scoreRoutes = require('./src/routes/score.routes');
@@ -56,9 +61,18 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // CORS configuration
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174', process.env.CLIENT_URL].filter(Boolean),
-    credentials: true
+    origin: [
+        'http://localhost:5173',
+        'http://localhost:5174',
+        'http://localhost:3000',
+        'https://jjcetcfrd.netlify.app',
+        process.env.CLIENT_URL
+    ].filter(Boolean),
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
+app.options('*', cors());
 
 // Logging
 if (process.env.NODE_ENV === 'development') {
@@ -173,6 +187,17 @@ const startServer = async () => {
                     socket.join(`user_${userId}`);
                     console.log(`Socket ${socket.id} joined user room: user_${userId}`);
                 }
+            });
+
+            // Chat events
+            socket.on('typing', (data) => {
+                const { receiverId, typing } = data;
+                socket.to(`user_${receiverId}`).emit('user_typing', { senderId: data.senderId, typing });
+            });
+
+            socket.on('message_read', (data) => {
+                const { senderId, receiverId } = data;
+                socket.to(`user_${senderId}`).emit('message_seen', { readerId: receiverId });
             });
 
             socket.on('disconnect', () => {

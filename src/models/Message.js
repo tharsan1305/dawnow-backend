@@ -1,14 +1,19 @@
 const mongoose = require('mongoose');
 
-const messageSchema = new mongoose.Schema({
-    sender: {
+const MessageSchema = new mongoose.Schema({
+    senderId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-    receiver: {
+    receiverId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        required: true
+    },
+    senderRole: {
+        type: String,
+        enum: ['staff', 'admin'],
         required: true
     },
     message: {
@@ -20,13 +25,11 @@ const messageSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    senderRole: {
-        type: String,
-        enum: ['staff', 'admin'],
-        required: true
+    readAt: {
+        type: Date
     }
 }, {
     timestamps: true
 });
 
-module.exports = mongoose.model('Message', messageSchema);
+module.exports = mongoose.model('Message', MessageSchema);

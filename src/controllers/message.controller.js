@@ -11,29 +11,21 @@ const sendMessage = async (req, res) => {
         const senderRole = req.user.role;
 
         const newMessage = await Message.create({
-            sender: senderId,
-            receiver: receiverId,
+            senderId,
+            receiverId,
             message,
             senderRole
         });
 
         // Populate sender info for the frontend
         const populatedMessage = await Message.findById(newMessage._id)
-            .populate('sender', 'name profileImage staffId department');
+            .populate('senderId', 'name profileImage staffId department')
+            .populate('receiverId', 'name profileImage staffId department');
 
         // Emit via Socket.IO
         if (global.io) {
-            // Send to receiver's specific room
-            global.io.to(`user_${receiverId}`).emit('new_message', populatedMessage);
-            
-            // If sender is staff, also notify admins
-            if (senderRole === 'staff') {
-                global.io.to('admin').emit('admin_notification', {
-                    type: 'chat',
-                    senderName: req.user.name,
-                    message: message.substring(0, 50) + (message.length > 50 ? '...' : '')
-                });
-            }
+            // Send to receiver's specific room using 'receive_message' as requested
+            global.io.to(`user_${receiverId}`).emit('receive_message', populatedMessage);
         }
 
         res.status(201).json(populatedMessage);
@@ -44,26 +36,26 @@ const sendMessage = async (req, res) => {
 };
 
 // @desc    Get conversation between current user and another
-// @route   GET /api/messages/:otherId
-// @access  Private
+// @route   GET /api/messages/:userId
 const getConversation = async (req, res) => {
     try {
         const userId = req.user._id;
-        const { otherId } = req.params;
+        const otherId = req.params.userId;
 
         const messages = await Message.find({
             $or: [
-                { sender: userId, receiver: otherId },
-                { sender: otherId, receiver: userId }
+                { senderId: userId, receiverId: otherId },
+                { senderId: otherId, receiverId: userId }
             ]
         })
         .sort({ createdAt: 1 })
-        .populate('sender', 'name profileImage staffId department');
+        .populate('senderId', 'name profileImage staffId department')
+        .populate('receiverId', 'name profileImage staffId department');
 
         // Mark as read
         await Message.updateMany(
-            { receiver: userId, sender: otherId, isRead: false },
-            { isRead: true }
+            { receiverId: userId, senderId: otherId, isRead: false },
+            { isRead: true, readAt: new Date() }
         );
 
         res.json(messages);
@@ -73,36 +65,51 @@ const getConversation = async (req, res) => {
     }
 };
 
-// @desc    Get all conversations for admin
-// @route   GET /api/messages/admin/list
-// @access  Private (Admin)
+// @desc    Mark all messages from a user as read
+// @route   PUT /api/messages/read/:userId
+const markAsRead = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const senderId = req.params.userId;
+
+        await Message.updateMany(
+            { receiverId: userId, senderId, isRead: false },
+            { isRead: true, readAt: new Date() }
+        );
+
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// @desc    Get all staff conversations with unread count (Admin only)
+// @route   GET /api/messages/conversations
 const getAdminConversations = async (req, res) => {
     try {
         const adminId = req.user._id;
 
         // Find all staff who have messaged or received messages from admin
-        // This is a bit complex: find unique sender/receivers that are not the admin
         const staffIds = await Message.find({
-            $or: [{ sender: adminId }, { receiver: adminId }]
-        }).distinct('sender receiver');
+            $or: [{ senderId: adminId }, { receiverId: adminId }]
+        }).distinct('senderId receiverId');
 
         const filteredStaffIds = staffIds.filter(id => id.toString() !== adminId.toString());
 
         const staffList = await User.find({ _id: { $in: filteredStaffIds } })
             .select('name department profileImage staffId isActive');
 
-        // For each staff, get the last message and unread count
         const results = await Promise.all(staffList.map(async (s) => {
             const lastMsg = await Message.findOne({
                 $or: [
-                    { sender: s._id, receiver: adminId },
-                    { sender: adminId, receiver: s._id }
+                    { senderId: s._id, receiverId: adminId },
+                    { senderId: adminId, receiverId: s._id }
                 ]
             }).sort({ createdAt: -1 });
 
             const unreadCount = await Message.countDocuments({
-                sender: s._id,
-                receiver: adminId,
+                senderId: s._id,
+                receiverId: adminId,
                 isRead: false
             });
 
@@ -113,7 +120,6 @@ const getAdminConversations = async (req, res) => {
             };
         }));
 
-        // Sort results by last message time
         results.sort((a, b) => (b.lastMessage?.createdAt || 0) - (a.lastMessage?.createdAt || 0));
 
         res.json(results);
@@ -123,13 +129,12 @@ const getAdminConversations = async (req, res) => {
     }
 };
 
-// @desc    Get unread count for current user
-// @route   GET /api/messages/unread/count
-// @access  Private
+// @desc    Get unread count from admin (Staff only)
+// @route   GET /api/messages/unread-count
 const getUnreadTotal = async (req, res) => {
     try {
         const count = await Message.countDocuments({
-            receiver: req.user._id,
+            receiverId: req.user._id,
             isRead: false
         });
         res.json({ count });
@@ -142,5 +147,6 @@ module.exports = {
     sendMessage,
     getConversation,
     getAdminConversations,
-    getUnreadTotal
+    getUnreadTotal,
+    markAsRead
 };
