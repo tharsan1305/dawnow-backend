@@ -65,9 +65,20 @@ const cleanCellText = (text, maxLength = 3000) => {
     text = text.replace(/[ \t]{2,}/g, ' ');
     text = text.trim();
     
-    // Final check for AI-like sentences
-    if (text.toLowerCase().includes("got it") && text.toLowerCase().includes("let me correct")) return '';
+    // FINAL CHECK for technical error residue
+    const badPatterns = [
+        /ReferenceError:/i,
+        /tasks is not defined/i,
+        /undefined/i,
+        /\[object Object\]/i,
+        /n:\\CFRD/i,
+        /routes\.js/i
+    ];
     
+    for (const bad of badPatterns) {
+        if (bad.test(text)) return '';
+    }
+
     // Truncate to maxLength (increased to handle full content)
     return text.length > maxLength
         ? text.substring(0, maxLength) + '...'

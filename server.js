@@ -5,6 +5,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 const http = require('http');
 const { Server } = require('socket.io');
 const connectDB = require('./src/config/db');
@@ -16,10 +18,8 @@ const adminRoutes = require('./src/routes/admin.routes');
 const questionRoutes = require('./src/routes/question.routes');
 const reportRoutes = require('./src/routes/report.routes');
 
-// Health check route
-app.get('/health', (req, res) => {
-    res.json({ status: 'ok', message: 'CFRD Backend Running' });
-});
+const certificateRoutes = require('./src/routes/certificate.routes');
+const aiRoutes = require('./src/routes/ai.routes');
 
 // V1.0 API Routes
 const dailylogRoutes = require('./src/routes/dailylog.routes');
@@ -34,10 +34,14 @@ const leaveRoutes = require('./src/routes/leave.routes');
 const settingsRoutes = require('./src/routes/settings.routes');
 const announcementsRoutes = require('./src/routes/notice.routes'); // Alias
 const messageRoutes = require('./src/routes/message.routes');
-const certificateRoutes = require('./src/routes/certificate.routes');
 
 // Initialize express
 const app = express();
+
+// Health check route
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', message: 'CFRD Backend Running' });
+});
 
 // Static file serving for uploads
 const path = require('path');
@@ -59,11 +63,18 @@ app.use(helmet({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+// Data sanitization against XSS
+app.use(xss());
+
 // CORS configuration
 app.use(cors({
     origin: [
         'http://localhost:5173',
         'http://localhost:5174',
+        'http://localhost:5175',
         'http://localhost:3000',
         'https://jjcetcfrd.netlify.app',
         process.env.CLIENT_URL
@@ -118,6 +129,7 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/announcements', announcementsRoutes);
 app.use('/api/certificates', certificateRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Backup & Recovery System
 require('./src/backup/crashDetector').startCrashDetector();

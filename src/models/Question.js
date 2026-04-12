@@ -1,44 +1,44 @@
 const mongoose = require('mongoose');
 
 const questionSchema = new mongoose.Schema({
-    questionText: {
-        type: String,
-        required: [true, 'Question text is required'],
-        trim: true
+    section: { 
+        type: String, 
+        required: [true, 'Section is required'],
+        enum: ['paper', 'project', 'patent', 'book', 'other', 'general', 'activity', 'additional']
     },
-    type: {
-        type: String,
-        enum: ['text', 'textarea', 'date', 'number', 'mcq', 'checkbox', 'yesno'],
-        default: 'text'
+    label: { 
+        type: String, 
+        required: [true, 'Label is required'],
+        trim: true 
+    },
+    fieldType: { 
+        type: String, 
+        enum: ['text', 'textarea', 'select', 'number', 'date', 'file', 'yesno', 'mcq', 'checkbox'], 
+        default: 'text' 
     },
     options: [{
         type: String,
         trim: true
     }],
-    section: {
-        type: String,
-        enum: ['paper', 'project', 'patent', 'book', 'activity', 'additional', 'general'],
-        default: 'general'
-    },
-    label: {
-        type: String,
-        trim: true
-    },
     placeholder: {
         type: String,
         trim: true
     },
-    required: {
-        type: Boolean,
-        default: false
+    isRequired: { 
+        type: Boolean, 
+        default: false 
     },
-    order: {
-        type: Number,
-        default: 0
+    isBuiltIn: { 
+        type: Boolean, 
+        default: false 
     },
-    isActive: {
-        type: Boolean,
-        default: true
+    order: { 
+        type: Number, 
+        default: 0 
+    },
+    isActive: { 
+        type: Boolean, 
+        default: true 
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,

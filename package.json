@@ -14,8 +14,9 @@
         "dotenv": "^16.3.1",
         "exceljs": "^4.4.0",
         "express": "^4.18.2",
+        "express-mongo-sanitize": "^2.2.0",
         "express-rate-limit": "^7.5.1",
-        "express-validator": "^7.0.1",
+        "express-validator": "^7.3.2",
         "helmet": "^7.1.0",
         "jsonwebtoken": "^9.0.2",
         "mongodb": "^7.1.1",
@@ -24,11 +25,13 @@
         "multer": "^2.1.1",
         "node-cron": "^4.2.1",
         "nodemailer": "^8.0.4",
+        "openai": "^6.34.0",
         "pdfkit": "^0.14.0",
         "puppeteer": "^23.11.1",
         "socket.io": "^4.8.3",
         "uuid": "^13.0.0",
-        "winston": "^3.19.0"
+        "winston": "^3.19.0",
+        "xss-clean": "^0.1.4"
     },
     "devDependencies": {
         "eslint": "^10.2.0",

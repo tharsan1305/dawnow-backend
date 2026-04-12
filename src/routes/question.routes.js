@@ -2,28 +2,26 @@ const express = require('express');
 const router = express.Router();
 const {
     getQuestions,
-    getQuestionsBySection,
     getAllQuestions,
     createQuestion,
     updateQuestion,
     deleteQuestion,
-    toggleQuestion,
-    reorderQuestions
+    reorderQuestions,
+    seedQuestions
 } = require('../controllers/question.controller');
 const { protect, isAdmin } = require('../middleware/auth');
 
-// Public route for getting active questions
+// Public/Staff access (authenticated)
 router.get('/', protect, getQuestions);
 
-// Get questions by section
-router.get('/section/:section', protect, getQuestionsBySection);
+// Admin exclusive routes
+router.use(protect, isAdmin);
 
-// Admin routes
-router.get('/all', protect, isAdmin, getAllQuestions);
-router.post('/', protect, isAdmin, createQuestion);
-router.put('/reorder', protect, isAdmin, reorderQuestions);
-router.put('/:id', protect, isAdmin, updateQuestion);
-router.patch('/:id/toggle', protect, isAdmin, toggleQuestion);
-router.delete('/:id', protect, isAdmin, deleteQuestion);
+router.get('/all', getAllQuestions);
+router.post('/', createQuestion);
+router.put('/reorder', reorderQuestions);
+router.put('/:id', updateQuestion);
+router.delete('/:id', deleteQuestion);
+router.post('/seed', seedQuestions);
 
 module.exports = router;

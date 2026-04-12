@@ -286,6 +286,7 @@ const updateTask = async (req, res) => {
 const getNotifications = async (req, res) => {
     try {
         const department = req.user.department;
+        const userId = req.user._id;
 
         const notifications = await Notification.find({
             $or: [
@@ -294,11 +295,18 @@ const getNotifications = async (req, res) => {
             ]
         })
             .sort({ createdAt: -1 })
-            .populate('createdBy', 'name');
+            .populate('createdBy', 'name')
+            .lean();
 
-        res.json(notifications);
+        // Add isRead flag for simple frontend handling
+        const data = notifications.map(n => ({
+            ...n,
+            isRead: n.readBy && n.readBy.some(id => id.toString() === userId.toString())
+        }));
+
+        res.json(data);
     } catch (error) {
-        console.error(error);
+        console.error('[NOTIFICATIONS ERROR]', error);
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -414,42 +422,39 @@ const getPwdRequestStatus = async (req, res) => {
 
 const getMyReports = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user._id;
         const range = req.query.range || 'week';
 
-        // Find staff linked to this user (we verified User inherently is the staff model)
-        const staff = await User.findOne({
-            $or: [{ _id: userId }, { email: req.user.email }, { name: req.user.name }]
-        });
-        
-        if (!staff) return res.json({ total: 0, approved: 0, pending: 0, reports: [] });
-
         const now = new Date();
-        let startDate;
+        let startDate = new Date();
+        
         if (range === 'week') {
-            startDate = new Date(now);
+            // Monday of this week
             const day = now.getDay();
-            startDate.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+            const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+            startDate = new Date(now.setDate(diff));
             startDate.setHours(0, 0, 0, 0);
         } else {
+            // 1st of this month
             startDate = new Date(now.getFullYear(), now.getMonth(), 1);
             startDate.setHours(0, 0, 0, 0);
         }
 
         const reports = await TaskEntry.find({
-            staff: staff._id,
-            date: { $gte: startDate, $lte: now }
-        }).sort({ date: -1 });
+            staff: userId,
+            date: { $gte: startDate }
+        }).sort({ date: -1 }).lean();
 
         res.json({
             total: reports.length,
-            completed: reports.filter(r => r.status === 'Completed' || r.status === 'approved').length,
+            completed: reports.filter(r => ['approved', 'Completed'].includes(r.status)).length,
             pendingCount: reports.filter(r => r.status === 'pending').length,
             approved: reports.filter(r => r.status === 'approved').length,
             rejected: reports.filter(r => r.status === 'rejected').length,
-            reports: reports.slice(0, 10) // Increased to 10 to ensure we show more in dashboard
+            reports: reports.slice(0, 10)
         });
     } catch (err) {
+        console.error('[MY REPORTS ERROR]', err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -458,26 +463,23 @@ const getStreak = async (req, res) => {
     try {
         const staffId = req.user._id;
         
-        // Find all unique dates this staff has submitted a report
-        // We group by date normalized to YYYY-MM-DD
         const reports = await TaskEntry.find({ staff: staffId })
+            .select('date status')
             .sort({ date: -1 })
-            .select('date')
             .lean();
 
         if (reports.length === 0) {
             return res.json({ currentStreak: 0, longestStreak: 0, thisWeek: 0 });
         }
 
-        // Normalize dates to set of strings
-        const dateSet = new Set(reports.map(r => r.date.toISOString().split('T')[0]));
-        const sortedDates = Array.from(dateSet).sort((a, b) => new Date(b) - new Date(a));
-
-        let currentStreak = 0;
-        let now = new Date();
-        let checkDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        // Normalize dates to YYYY-MM-DD
+        const dateSet = new Set(reports.map(r => new Date(r.date).toISOString().split('T')[0]));
         
-        // If not submitted today, check if submitted yesterday to continue streak
+        let currentStreak = 0;
+        let today = new Date();
+        let checkDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        
+        // Start from today or yesterday
         const todayStr = checkDate.toISOString().split('T')[0];
         if (!dateSet.has(todayStr)) {
             checkDate.setDate(checkDate.getDate() - 1);
@@ -489,7 +491,6 @@ const getStreak = async (req, res) => {
                 currentStreak++;
                 checkDate.setDate(checkDate.getDate() - 1);
             } else {
-                // Allow skipping Sundays
                 if (checkDate.getDay() === 0) {
                     checkDate.setDate(checkDate.getDate() - 1);
                     continue;
@@ -498,31 +499,29 @@ const getStreak = async (req, res) => {
             }
         }
 
-        // Longest streak calculation
         let longestStreak = 0;
         let tempStreak = 0;
         const allSorted = Array.from(dateSet).sort((a, b) => new Date(a) - new Date(b));
         
-        // Simple longest consecutive 
         if (allSorted.length > 0) {
             tempStreak = 1;
             longestStreak = 1;
             for (let i = 1; i < allSorted.length; i++) {
                 const prev = new Date(allSorted[i - 1]);
                 const curr = new Date(allSorted[i]);
-                const diff = (curr - prev) / (1000 * 60 * 60 * 24);
+                const diff = Math.round((curr - prev) / (1000 * 60 * 60 * 24));
                 
-                if (diff <= 1 || (diff <= 2 && curr.getDay() === 1)) { // Allow 1 day gap or 2 days for Monday
+                if (diff === 1 || (diff === 2 && curr.getDay() === 1)) { 
                     tempStreak++;
-                } else {
+                } else if (diff > 1) {
                     tempStreak = 1;
                 }
                 longestStreak = Math.max(longestStreak, tempStreak);
             }
         }
 
-        // This week total (Mon-Sat)
-        const monday = new Date();
+        const now = new Date();
+        const monday = new Date(now);
         monday.setDate(now.getDate() - (now.getDay() === 0 ? 6 : now.getDay() - 1));
         monday.setHours(0,0,0,0);
         
@@ -535,11 +534,7 @@ const getStreak = async (req, res) => {
             }
         }
 
-        res.json({
-            currentStreak,
-            longestStreak,
-            thisWeek: thisWeekCount
-        });
+        res.json({ currentStreak, longestStreak, thisWeek: thisWeekCount });
     } catch (error) {
         console.error('[STREAK ERROR]', error);
         res.status(500).json({ message: 'Server error' });
@@ -548,48 +543,33 @@ const getStreak = async (req, res) => {
 
 const getResearchTargets = async (req, res) => {
     try {
-        const staff = await User.findById(req.user.id);
+        const userId = req.user._id;
         const year = new Date().getFullYear();
         const startDate = new Date(year, 0, 1);
-        const endDate = new Date(year, 11, 31, 23, 59, 59);
 
         const tasks = await TaskEntry.find({
-            staff: req.user.id,
-            date: { $gte: startDate, $lte: endDate },
-            status: 'approved'
-        });
+            staff: userId,
+            date: { $gte: startDate },
+            status: { $in: ['approved', 'Completed'] }
+        }).lean();
 
-        // Current counts
         const counts = {
             papers: tasks.filter(t => t.paperTitle && t.paperTitle.trim() !== '').length,
             projects: tasks.filter(t => t.projectName && t.projectName.trim() !== '').length,
             patents: tasks.filter(t => t.patentTitle && t.patentTitle.trim() !== '').length,
         };
 
-        // Targets
-        const targets = {
-            papers: 1,
-            projects: 1,
-            patents: 1
-        };
+        const targets = { papers: 1, projects: 1, patents: 1 };
 
-        // Percentage (max 100)
         const percentages = {
             papers: Math.min(100, (counts.papers / targets.papers) * 100),
             projects: Math.min(100, (counts.projects / targets.projects) * 100),
             patents: Math.min(100, (counts.patents / targets.patents) * 100)
         };
 
-        // Total progress (average)
         const totalProgress = Math.round((percentages.papers + percentages.projects + percentages.patents) / 3);
 
-        res.json({
-            year,
-            counts,
-            targets,
-            percentages,
-            totalProgress
-        });
+        res.json({ year, counts, targets, percentages, totalProgress });
     } catch (error) {
         console.error('[TARGETS ERROR]', error);
         res.status(500).json({ message: 'Server error' });

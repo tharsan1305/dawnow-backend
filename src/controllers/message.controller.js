@@ -17,15 +17,25 @@ const sendMessage = async (req, res) => {
             senderRole
         });
 
-        // Populate sender info for the frontend
+        // Populate sender and receiver info
         const populatedMessage = await Message.findById(newMessage._id)
             .populate('senderId', 'name profileImage staffId department')
             .populate('receiverId', 'name profileImage staffId department');
 
         // Emit via Socket.IO
         if (global.io) {
-            // Send to receiver's specific room using 'receive_message' as requested
+            // 1. Send to the specific user's room
             global.io.to(`user_${receiverId}`).emit('receive_message', populatedMessage);
+            
+            // 2. Also emit a generic 'new_message' for layout badges/notifications
+            global.io.to(`user_${receiverId}`).emit('new_message', populatedMessage);
+            
+            // 3. For admins, also emit to 'admin' room if needed
+            const receiver = await User.findById(receiverId);
+            if (receiver && receiver.role === 'admin') {
+                global.io.to('admin').emit('new_message', populatedMessage);
+                global.io.to('admin').emit('receive_message', populatedMessage);
+            }
         }
 
         res.status(201).json(populatedMessage);
@@ -89,14 +99,18 @@ const getAdminConversations = async (req, res) => {
     try {
         const adminId = req.user._id;
 
-        // Find all staff who have messaged or received messages from admin
-        const staffIds = await Message.find({
+        // Find all unique users who have messaged or received messages from this admin
+        const messages = await Message.find({
             $or: [{ senderId: adminId }, { receiverId: adminId }]
-        }).distinct('senderId receiverId');
+        }).lean();
 
-        const filteredStaffIds = staffIds.filter(id => id.toString() !== adminId.toString());
+        const uniqueUserIds = new Set();
+        messages.forEach(m => {
+            if (m.senderId.toString() !== adminId.toString()) uniqueUserIds.add(m.senderId.toString());
+            if (m.receiverId.toString() !== adminId.toString()) uniqueUserIds.add(m.receiverId.toString());
+        });
 
-        const staffList = await User.find({ _id: { $in: filteredStaffIds } })
+        const staffList = await User.find({ _id: { $in: Array.from(uniqueUserIds) } })
             .select('name department profileImage staffId isActive');
 
         const results = await Promise.all(staffList.map(async (s) => {
@@ -143,7 +157,22 @@ const getUnreadTotal = async (req, res) => {
     }
 };
 
+// @desc    Get the support admin profile (Staff access)
+// @route   GET /api/messages/support-admin
+const getSupportAdmin = async (req, res) => {
+    try {
+        const admin = await User.findOne({ role: 'admin' }).select('name department profileImage staffId isActive');
+        if (!admin) {
+            return res.status(404).json({ message: 'No support admin found' });
+        }
+        res.json(admin);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
 module.exports = {
+    getSupportAdmin,
     sendMessage,
     getConversation,
     getAdminConversations,

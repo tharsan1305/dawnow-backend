@@ -28,9 +28,9 @@ const getDashboard = async (req, res) => {
             approvedAt: { $gte: startOfToday }
         }).lean();
 
-        // Research Metrics (Approved & Pending for real-time reflection)
+        // Research Metrics (Approved, Pending & Completed for real-time reflection)
         const approvedTasks = await TaskEntry.find({ 
-            status: { $in: ['approved', 'pending'] } 
+            status: { $in: ['approved', 'pending', 'Completed'] } 
         }).populate('staff').lean();
 
         let totalPapers = 0;
@@ -714,7 +714,7 @@ const getTodayStatus = async (req, res) => {
                 const task = todayTasks.find(t => t.staff.toString() === staff._id.toString());
                 submittedList.push({
                     ...staff,
-                    status: task.status
+                    status: task ? task.status : 'pending'
                 });
             } else {
                 absentList.push(staff);
@@ -724,18 +724,18 @@ const getTodayStatus = async (req, res) => {
         // SUPER COMPATIBLE RESPONSE
         res.json({
             success: true,
-            // New preferred naming
+            // Preferred naming
             totalStaff: allStaff.length,
             submittedCount: submittedList.length,
             absentCount: absentList.length,
             submittedList: submittedList,
             absentList: absentList,
             
-            // Legacy / Standard naming (submitted/absent as arrays)
+            // Standard naming (arrays)
             submitted: submittedList,
             absent: absentList,
             
-            // Nested summary naming (as expected by some Dashboard versions)
+            // Nested summary naming (Dashboard requirement)
             summary: {
                 total: allStaff.length,
                 submitted: submittedList.length,
@@ -743,7 +743,7 @@ const getTodayStatus = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('[TODAY STATUS ERROR]', error);
+        console.error('[TODAY STATUS ERROR]', error.message);
         res.status(500).json({ success: false, message: 'Server error' });
     }
 };
